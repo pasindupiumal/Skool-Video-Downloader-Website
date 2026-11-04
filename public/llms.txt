@@ -1,0 +1,17 @@
+# Skool Video Downloader
+
+The ultimate companion for Skool learners. Save your favorite lessons for offline archival.
+
+## Core Capabilities
+- Download videos from Skool classroom modules.
+- Supports Skool native (Mux), Loom, Vimeo, and Wistia. YouTube is not supported.
+- One-click MP4 extraction.
+
+## Links
+- [Homepage](https://skoolvideosaver.com)
+- [Pricing](/pricing.md)
+- [Blog](/blog)
+- [Terms](/terms)
+
+## Pricing Summary
+- **Lifetime Pro:** $29 one-time payment for unlimited access.
