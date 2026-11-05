@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { createCheckoutSession } from '@/lib/dodopayments';
+import { createStripeCheckoutSession } from '@/lib/stripe';
 import { fetchLifetimePricing } from "@/lib/pricing";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
@@ -27,13 +28,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
     }
 
-    const dodoProductId = planId === 'lifetime'
-      ? process.env.DODO_LIFETIME_PRODUCT_ID
-      : process.env.DODO_MONTHLY_PRODUCT_ID;
-    if (!dodoProductId) {
-      console.error(`Checkout: product id env var for "${planId}" is not set.`);
-      return NextResponse.json({ error: 'Checkout is not configured yet. Please contact support.' }, { status: 503 });
-    }
+    // Which gateway handles NEW checkouts. Set PAYMENT_GATEWAY=stripe in Vercel to
+    // switch; anything else (including unset) keeps Dodo. Both webhooks stay live
+    // regardless, so existing customers on either gateway keep syncing.
+    const gateway = process.env.PAYMENT_GATEWAY === 'stripe' ? 'stripe' : 'dodo';
 
     // The lifetime price climbs with sales, so it's computed server-side at
     // checkout time — never trusted from the client.
@@ -41,6 +39,23 @@ export async function POST(request: Request) {
 
     const baseUrl =
       process.env.NEXT_PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || new URL(request.url).origin;
+
+    if (gateway === 'stripe') {
+      const checkout = await createStripeCheckoutSession({ plan: planId, userEmail: email, baseUrl, priceInDollars });
+      if (!checkout.url) {
+        console.error('Stripe checkout failed: no url returned', checkout.id);
+        return NextResponse.json({ error: 'Could not start checkout. Please try again or contact support.' }, { status: 502 });
+      }
+      return NextResponse.json({ url: checkout.url });
+    }
+
+    const dodoProductId = planId === 'lifetime'
+      ? process.env.DODO_LIFETIME_PRODUCT_ID
+      : process.env.DODO_MONTHLY_PRODUCT_ID;
+    if (!dodoProductId) {
+      console.error(`Checkout: product id env var for "${planId}" is not set.`);
+      return NextResponse.json({ error: 'Checkout is not configured yet. Please contact support.' }, { status: 503 });
+    }
 
     const checkout = await createCheckoutSession(dodoProductId, email, baseUrl, priceInDollars);
 

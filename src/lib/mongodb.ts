@@ -11,6 +11,12 @@ if (!uri) {
 // half a minute and then surfaces as a misleading "wrong password" 401.
 const options: MongoClientOptions = {
   serverSelectionTimeoutMS: 5000,
+  // Every serverless instance gets its own pool, and Atlas M0 allows only 500
+  // connections in total. The default pool (100 per instance) exhausts that
+  // under bursty traffic, so keep each instance small and drop idle sockets.
+  maxPoolSize: 5,
+  minPoolSize: 0,
+  maxIdleTimeMS: 10_000,
 };
 
 declare global {

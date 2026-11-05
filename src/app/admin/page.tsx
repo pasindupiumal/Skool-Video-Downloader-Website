@@ -7,6 +7,7 @@ import { usersCollection, subscriptionsCollection, licenseKeysCollection, contac
 import { FREE_DOWNLOAD_LIMIT } from "@/lib/freeQuota";
 import AdminLogoutButton from "./admin-logout-button";
 import LicenseActions from "./license-actions";
+import AddLicenseForm from "./add-license-form";
 import ResetPasswordButton from "./reset-password-button";
 import MessageToggle from "./message-toggle";
 import FreeDownloadsGrant from "./free-downloads-grant";
@@ -118,6 +119,12 @@ export default async function AdminDashboard() {
             </button>
           </a>
         </div>
+      </div>
+
+      <div className="premium-card" style={{ marginTop: "32px" }}>
+        <h3>Add license key</h3>
+        <p style={{ marginBottom: "16px" }}>Manually add a key for a customer (e.g. when a payment webhook didn't store it). Also activates their plan.</p>
+        <AddLicenseForm />
       </div>
 
       <div className="premium-card" style={{ marginTop: "32px" }}>

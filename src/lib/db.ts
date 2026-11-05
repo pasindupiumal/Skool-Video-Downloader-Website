@@ -33,6 +33,10 @@ export interface SubscriptionDoc {
   status: string; // active, cancelled, on_hold
   plan: string; // lifetime, monthly
   dodoId?: string | null;
+  // Stripe subscription id (monthly) or payment_intent id (lifetime).
+  stripeId?: string | null;
+  // Stripe customer id, used to open the billing portal.
+  stripeCustomerId?: string | null;
   // Self-computed (not read from Dodo) — when the current paid month should
   // run out. A safety net independent of whether Dodo's own cancellation/
   // dunning webhook ever arrives: see src/lib/subscription.ts.
@@ -56,6 +60,8 @@ export interface LicenseKeyDoc {
   // key that stops a retried webhook delivery from minting a second key for
   // the same purchase.
   dodoId?: string | null;
+  // Same role as dodoId, for keys minted from a Stripe purchase.
+  stripeId?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
