@@ -40,6 +40,9 @@ async function main() {
     db.collection('licenseKeys').createIndex({ dodoId: 1 }, { sparse: true }),
     db.collection('subscriptions').createIndex({ userId: 1 }, { unique: true }),
     db.collection('subscriptions').createIndex({ dodoId: 1 }, { sparse: true }),
+    // Stripe equivalents (subscription id / payment_intent id).
+    db.collection('licenseKeys').createIndex({ stripeId: 1 }, { sparse: true }),
+    db.collection('subscriptions').createIndex({ stripeId: 1 }, { sparse: true }),
     // Refunds/disputes carry only a payment id; this resolves it to the subscription.
     db.collection('subscriptions').createIndex({ paymentIds: 1 }, { sparse: true }),
     // Rate-limit windows delete themselves once expired (see src/lib/rateLimit.ts).

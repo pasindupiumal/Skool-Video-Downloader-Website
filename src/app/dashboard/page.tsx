@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import DashboardNavbar from "./navbar";
 import PricingSection from "./pricing-section";
 import LicenseList from "./license-list";
+import BillingPortalButton from "./billing-portal-button";
 
 export default async function UserDashboard() {
   const session = await getServerSession(authOptions);
@@ -36,6 +37,11 @@ export default async function UserDashboard() {
   const subscriptionStatus = subscription
     ? (isPremiumActive ? subscription.status : (subscription.status === "active" ? "expired" : subscription.status))
     : "Free";
+  // Which billing portal applies: wherever this customer actually paid. Free
+  // accounts follow the currently selected checkout gateway.
+  const usesStripe = subscription?.stripeId || subscription?.stripeCustomerId
+    ? true
+    : subscription?.dodoId ? false : process.env.PAYMENT_GATEWAY === 'stripe';
   const planName = subscription?.plan || "No Plan";
   const isFree = !isPremiumActive;
 
@@ -138,10 +144,14 @@ export default async function UserDashboard() {
               </div>
               <h3>Billing & Invoices</h3>
             </div>
-            <p className={styles.cardText}>Manage invoices, subscription status, and payment methods via Dodo Payments.</p>
-            <a href="https://customer.dodopayments.com" target="_blank" rel="noopener noreferrer" style={{ width: '100%', marginTop: '20px' }}>
-              <button className={styles.secondaryButton} style={{ marginTop: 0 }}>Open Billing Portal</button>
-            </a>
+            <p className={styles.cardText}>Manage invoices, subscription status, and payment methods via {usesStripe ? 'Stripe' : 'Dodo Payments'}.</p>
+            {usesStripe ? (
+              <BillingPortalButton className={styles.secondaryButton} />
+            ) : (
+              <a href="https://customer.dodopayments.com" target="_blank" rel="noopener noreferrer" style={{ width: '100%', marginTop: '20px' }}>
+                <button className={styles.secondaryButton} style={{ marginTop: 0 }}>Open Billing Portal</button>
+              </a>
+            )}
           </div>
         </div>
       </main>

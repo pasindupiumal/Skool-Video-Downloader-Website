@@ -140,13 +140,13 @@ async function storeDodoIssuedLicenseKey(
   licenseKeys: LicenseKeys,
   subscriptions: Subscriptions,
   users: Users
-) {
+): Promise<boolean> {
   console.log("Dodo license_key.created event.data (verify field names against this):", JSON.stringify(data));
 
   const { key, email: directEmail, productId, refId, isSubscription } = extractLicenseKeyFields(data);
   if (!key) {
     console.error("Dodo webhook: license_key.created had no recognizable key field — see logged payload above.");
-    return;
+    return true; // retrying will not help: the payload has no key
   }
 
   let email = directEmail ? String(directEmail).toLowerCase().trim() : null;
@@ -162,9 +162,12 @@ async function storeDodoIssuedLicenseKey(
   if (!email) {
     console.error(
       `Dodo webhook: could not resolve an email for license_key.created (key ${key}) — ` +
-      "see logged payload above. Add the license key manually via /admin once you know who it belongs to."
+      "see logged payload above. Returning an error so Dodo retries after payment.succeeded has created the purchase record."
     );
-    return;
+    // license_key.created can arrive a few seconds BEFORE payment.succeeded, so the
+    // purchase record the email is looked up from may not exist yet. A non-2xx makes
+    // Dodo redeliver later (this is what lost the first real sale's key).
+    return false;
   }
 
   const now = new Date();
@@ -185,6 +188,7 @@ async function storeDodoIssuedLicenseKey(
       throw err;
     }
   }
+  return true;
 }
 
 // Revokes access for a subscription id or payment id. Refunds and disputes
@@ -281,7 +285,9 @@ export async function POST(req: Request) {
       // Dodo generated and emailed the customer their license key — this is
       // the only place a key gets written to our database now.
       case "license_key.created":
-        await storeDodoIssuedLicenseKey(event.data, licenseKeys, subscriptions, users);
+        if (!(await storeDodoIssuedLicenseKey(event.data, licenseKeys, subscriptions, users))) {
+          return NextResponse.json({ error: "Purchase not recorded yet, retry later" }, { status: 503 });
+        }
         break;
 
       // Recurring renewal — no new key, just keep the subscription record

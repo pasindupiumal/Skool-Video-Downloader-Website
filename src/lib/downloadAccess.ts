@@ -44,9 +44,10 @@ export async function checkLicenseKey(licenseKey: string, deviceId: string | nul
     return deviceMismatch();
   }
 
-  if (license.plan === "monthly" && license.dodoId) {
+  const providerId = license.stripeId || license.dodoId;
+  if (license.plan === "monthly" && providerId) {
     const subscriptions = await subscriptionsCollection();
-    const subscription = await subscriptions.findOne({ dodoId: license.dodoId });
+    const subscription = await subscriptions.findOne({ $or: [{ stripeId: providerId }, { dodoId: providerId }] });
     if (subscription && !isSubscriptionCurrentlyActive(subscription)) {
       return {
         ok: false,

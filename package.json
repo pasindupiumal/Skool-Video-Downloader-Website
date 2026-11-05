@@ -18,7 +18,8 @@
     "react": "^18",
     "react-dom": "^18",
     "remark": "^15.0.1",
-    "remark-html": "^16.0.1"
+    "remark-html": "^16.0.1",
+    "stripe": "^23.1.0"
   },
   "devDependencies": {
     "@types/node": "^20",
