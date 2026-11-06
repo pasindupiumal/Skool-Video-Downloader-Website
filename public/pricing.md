@@ -1,4 +1,4 @@
-# Skool Video Downloader
+# Video Saver for Skool
 
 The Chrome extension for saving videos from Skool classroom lessons, community posts, and course replays as local MP4 files.
 

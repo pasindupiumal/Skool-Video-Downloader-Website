@@ -1,7 +1,7 @@
-# Skool Video Downloader - Product Mission & Rules
+# Video Saver for Skool - Product Mission & Rules
 
 ## Product Overview
-**Name:** Skool Video Downloader
+**Name:** Video Saver for Skool
 **Keywords:** `skool video downloader`, `skool video saver`
 **Domain:** http://skoolvideosaver.com/
 **Purpose:** A Chrome extension that allows users to save videos from Skool classroom lessons, community posts, and course replays as local MP4 files.

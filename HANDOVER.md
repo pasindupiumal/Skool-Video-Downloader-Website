@@ -1,6 +1,6 @@
 # Developer Handover Guide
 
-This repository contains the Next.js SaaS codebase for **Skool Video Downloader**. The project has been fully configured for local development, visual design, and payment flows.
+This repository contains the Next.js SaaS codebase for **Video Saver for Skool**. The project has been fully configured for local development, visual design, and payment flows.
 
 ---
 

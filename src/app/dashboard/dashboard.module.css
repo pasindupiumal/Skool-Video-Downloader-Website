@@ -229,6 +229,11 @@
   color: #d97706;
 }
 
+.discordIcon {
+  background: rgba(88, 101, 242, 0.1);
+  color: #5865f2;
+}
+
 .cardText {
   font-size: 0.95rem;
   line-height: 1.5;

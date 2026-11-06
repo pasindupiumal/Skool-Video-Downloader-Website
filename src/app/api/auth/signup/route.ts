@@ -10,10 +10,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { firstName, lastName, email, mobile, country, password, confirmPassword } =
+    const { firstName, lastName, email, mobile, password, confirmPassword } =
       await request.json();
 
-    if (!firstName || !lastName || !email || !country || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       return NextResponse.json({ error: "Please fill in all required fields." }, { status: 400 });
     }
 
@@ -49,7 +49,6 @@ export async function POST(request: Request) {
         lastName: String(lastName).trim(),
         name: `${String(firstName).trim()} ${String(lastName).trim()}`.trim(),
         mobile: mobile ? String(mobile).trim() : null,
-        country: String(country).trim(),
         downloadsUsed: 0,
         createdAt: now,
         updatedAt: now,
