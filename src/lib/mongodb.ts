@@ -1,4 +1,5 @@
 import { MongoClient, MongoClientOptions } from "mongodb";
+import { attachDatabasePool } from "@vercel/functions";
 
 const uri = process.env.MONGODB_URI;
 
@@ -14,7 +15,7 @@ const options: MongoClientOptions = {
   // Every serverless instance gets its own pool, and Atlas M0 allows only 500
   // connections in total. The default pool (100 per instance) exhausts that
   // under bursty traffic, so keep each instance small and drop idle sockets.
-  maxPoolSize: 5,
+  maxPoolSize: 2,
   minPoolSize: 0,
   maxIdleTimeMS: 10_000,
 };
@@ -35,6 +36,9 @@ if (process.env.NODE_ENV === "development") {
   clientPromise = global._mongoClientPromise;
 } else {
   const client = new MongoClient(uri, options);
+  // On Vercel, closes idle sockets before a function instance is frozen so
+  // suspended instances don't keep holding Atlas connections.
+  attachDatabasePool(client);
   clientPromise = client.connect();
 }
 

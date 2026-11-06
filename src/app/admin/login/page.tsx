@@ -5,7 +5,7 @@ import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 import AdminLoginClient from "./admin-login-client";
 
 export const metadata = {
-  title: "Admin Login | Skool Video Downloader",
+  title: "Admin Login | Video Saver for Skool",
 };
 
 export default function AdminLoginPage() {

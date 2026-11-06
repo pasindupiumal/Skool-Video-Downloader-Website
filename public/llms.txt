@@ -1,4 +1,4 @@
-# Skool Video Downloader
+# Video Saver for Skool
 
 The ultimate companion for Skool learners. Save your favorite lessons for offline archival.
 

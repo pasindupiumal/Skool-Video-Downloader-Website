@@ -7,6 +7,7 @@ import { remark } from 'remark';
 import html from 'remark-html';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import DemoVideo from "@/components/DemoVideo";
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const session = await getServerSession(authOptions);
@@ -36,8 +37,8 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         <header className="index-header">
           <div className="header-container">
             <a className="header-logo" href="/">
-              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Skool Video Downloader Logo" />
-              <span>Skool Video Downloader</span>
+              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Video Saver for Skool Logo" />
+              <span>Video Saver for Skool</span>
             </a>
             <nav className="header-nav">
               <a href="/#features">Features</a>
@@ -60,11 +61,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               <header className="fp-store-header">
                 <div className="fp-store-header-left">
                   <div className={`fp-store-icon fp-store-icon--${data.icon || 'media'}`}>
-                    {data.icon === 'video' ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 7.027a6.044 6.044 0 0 1 12 1.016A6.044 6.044 0 0 1 16.973 14M8 22a6 6 0 1 0 0-12a6 6 0 0 0 0 12M2 9c0-3.317 2.683-6 6-6l-.857 1.714M22 15c0 3.317-2.683 6-6 6l.857-1.714" color="currentColor"></path></svg>
-                    ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10 7.027a6.044 6.044 0 0 1 12 1.016A6.044 6.044 0 0 1 16.973 14M8 22a6 6 0 1 0 0-12a6 6 0 0 0 0 12M2 9c0-3.317 2.683-6 6-6l-.857 1.714M22 15c0 3.317-2.683 6-6 6l.857-1.714" color="currentColor"></path></svg>
-                    )}
+                    <img src="/assets/images/img_a38993e738.png" alt="Video Saver for Skool logo" style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: 'inherit' }} />
                   </div>
                   <div className="fp-store-header-text">
                     <h1>{data.title}</h1>
@@ -101,14 +98,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   <div className="fp-store-carousel-wrapper">
                     <div className="fp-store-carousel">
                       <div className="fp-store-slide active">
-                        <div className="feature-video-player">
-                          <div className="feature-video-wrapper">
-                            <video className="feature-video" poster="/assets/images/img_a4cd805418.png" controls playsInline preload="metadata">
-                              <source src={data.video_url} type="video/mp4" />
-                              Your browser does not support the video tag.
-                            </video>
-                          </div>
-                        </div>
+                        <DemoVideo />
                       </div>
                     </div>
                   </div>
@@ -129,7 +119,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
               <div className="fp-store-cta">
                 <h3>Want to save Skool videos?</h3>
-                <p>Get started with Skool Video Downloader today and unlock unlimited downloads.</p>
+                <p>Get started with Video Saver for Skool today and unlock unlimited downloads.</p>
                 <a href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer" className="button button--primary">
                   <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M376 160H272v153.37l52.69-52.68a16 16 0 0 1 22.62 22.62l-80 80a16 16 0 0 1-22.62 0l-80-80a16 16 0 0 1 22.62-22.62L240 313.37V160H136a56.06 56.06 0 0 0-56 56v208a56.06 56.06 0 0 0 56 56h240a56.06 56.06 0 0 0 56-56V216a56.06 56.06 0 0 0-56-56ZM272 48a16 16 0 0 0-32 0v112h32Z"></path></svg>
                   Get It Now
@@ -144,48 +134,25 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             <div className="footer-features">
               <h4 className="footer-section-title">Features</h4>
               <div className="footer-features-grid">
-                <a className="footer-feature-link" href="/#video-detect">Video Inspector</a>
-                <a className="footer-feature-link" href="/#live-text-editor">Mux Video Support</a>
-                <a className="footer-feature-link" href="/#font-changer">Wistia Support</a>
-                <a className="footer-feature-link" href="/#font-detection">Native Skool Player</a>
-                <a className="footer-feature-link" href="/#quality-select">Format Selector</a>
-                <a className="footer-feature-link" href="/#color-palette">Classroom Lesson Saver</a>
-                <a className="footer-feature-link" href="/#open-multiple-urls">Community Post Video</a>
-                <a className="footer-feature-link" href="/#todo-tasks">Module Archiver</a>
-                <a className="footer-feature-link" href="/#redirect-path">HLS to MP4 Converter</a>
-                <a className="footer-feature-link" href="/#reader-mode">Local Processing</a>
-                <a className="footer-feature-link" href="/#api-tester">Zero Data Tracking</a>
-                <a className="footer-feature-link" href="/#element-mover">Member-Only Access</a>
-                <a className="footer-feature-link" href="/#element-deleter">Fast Download Speed</a>
-                <a className="footer-feature-link" href="/#element-exporter">Export Element</a>
-                <a className="footer-feature-link" href="/#image-extractor">Extract Images</a>
-                <a className="footer-feature-link" href="/#batch-save">Batch Downloader</a>
-                <a className="footer-feature-link" href="/#page-outliner">Direct File Save</a>
-                <a className="footer-feature-link" href="/image-replacer">Image Replacer</a>
-                <a className="footer-feature-link" href="/#screenshot-tool">Take Screenshot</a>
-                <a className="footer-feature-link" href="/#seo-meta-inspector">Smart Page Scan</a>
-                <a className="footer-feature-link" href="/#clear-browsing-data">Secure OTP Login</a>
-                <a className="footer-feature-link" href="/#site-stack">Site Stack</a>
-                <a className="footer-feature-link" href="/#responsive-viewer">Responsive Viewer</a>
-                <a className="footer-feature-link" href="/#page-speed-insights">Cross-Browser Build</a>
-                <a className="footer-feature-link" href="/#meta-tags-preview">Regular Updates</a>
-                <a className="footer-feature-link" href="/#accessibility-tools">Email Support</a>
-                <a className="footer-feature-link" href="/#cookie-editor">No Ads or Tracking</a>
-                <a className="footer-feature-link" href="/#table-capture">Concurrent Downloads</a>
-                <a className="footer-feature-link" href="/#email-finder">Download Manager</a>
-                <a className="footer-feature-link" href="/#currency-converter">Quality Selector</a>
-                <a className="footer-feature-link" href="/#stripe-analytics">Windows / Mac / Linux</a>
-                <a className="footer-feature-link" href="/#save-as-pdf">No Subscription Fees</a>
-                <a className="footer-feature-link" href="/#web-scraper">One-Click Download</a>
-                <a className="footer-feature-link" href="/#broken-link-checker">Independent Product</a>
-                <a className="footer-feature-link" href="/#webpage-to-markdown">Easy Installation</a>
+                <a className="footer-feature-link" href="/#features">Video Saver for Skool</a>
+                <a className="footer-feature-link" href="/#features">Loom Video Downloader</a>
+                <a className="footer-feature-link" href="/#features">Vimeo Video Downloader</a>
+                <a className="footer-feature-link" href="/#features">Wistia Video Downloader</a>
+                <a className="footer-feature-link" href="/#features">Native Skool Player</a>
+                <a className="footer-feature-link" href="/#features">HLS to MP4 Conversion</a>
+                <a className="footer-feature-link" href="/#features">Live Download Progress</a>
+                <a className="footer-feature-link" href="/#features">Local, Private Processing</a>
+                <a className="footer-feature-link" href="/#pricing">Lifetime License</a>
+                <a className="footer-feature-link" href="/#pricing">Monthly Plan</a>
+                <a className="footer-feature-link" href="/dashboard">Your Dashboard</a>
+                <a className="footer-feature-link" href="/blog">Guides &amp; Tutorials</a>
               </div>
             </div>
             <div className="footer-divider"></div>
             <div className="footer-bottom">
               <div className="footer-brand">
-                <img src="/assets/images/img_987e4189cb.png" alt="Skool Video Downloader logo" className="footer-logo" />
-                <span>© 2026 Skool Video Downloader</span>
+                <img src="/assets/images/img_987e4189cb.png" alt="Video Saver for Skool logo" className="footer-logo" />
+                <span>© 2026 Video Saver for Skool</span>
               </div>
               <div className="footer-links">
                 <a href="/#pricing">Pricing</a>
@@ -196,7 +163,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                 <a href="/dmca">DMCA</a>
               </div>
               <div className="footer-meta">
-                <span>Version 2.2.1</span>
+                <span>Version 2.3.0</span>
                 <span className="footer-separator">•</span>
                 <span>Chrome Extension</span>
                 <span className="footer-separator">•</span>

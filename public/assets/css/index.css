@@ -477,6 +477,4 @@ body, html, p, span, div, a, li, button, input, textarea, h1, h2, h3, h4, h5, h6
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-}
-
-
+}.get-started-btn--discord{color:#fff;background:#5865f2}.get-started-btn--discord:hover{background:#4752c4;box-shadow:0 8px 24px #5865f266}

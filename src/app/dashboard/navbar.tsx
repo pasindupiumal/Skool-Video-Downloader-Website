@@ -20,9 +20,9 @@ export default function DashboardNavbar({ userEmail, userName }: NavbarProps) {
             src="/assets/images/img_a38993e738.png"
             height={32}
             width={32}
-            alt="Skool Video Downloader Logo"
+            alt="Video Saver for Skool Logo"
           />
-          <span>Skool Video Downloader</span>
+          <span>Video Saver for Skool</span>
         </a>
         <div className={styles.navLinks}>
           <a href="/dashboard" className={styles.navLinkActive}>Dashboard</a>

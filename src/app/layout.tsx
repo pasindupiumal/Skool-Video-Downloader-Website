@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Skool Video Downloader | Professional Video Archival Tool",
+  title: "Video Saver for Skool | Professional Video Archival Tool",
   description: "The #1 Chrome extension for saving videos from Skool classroom lessons, community posts, and course replays as local MP4 files. Fast, private, and 100% secure.",
   keywords: ["skool video downloader", "skool video saver", "download skool lessons", "save skool videos"],
   openGraph: {
-    title: "Skool Video Downloader",
+    title: "Video Saver for Skool",
     description: "Archive your favorite Skool lessons locally for offline learning.",
     url: "https://skoolvideosaver.com",
-    siteName: "Skool Video Downloader",
+    siteName: "Video Saver for Skool",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     site: "@skoolvideodownloader",
-    title: "Skool Video Downloader",
+    title: "Video Saver for Skool",
     description: "The ultimate companion for Skool learners.",
   }
 };

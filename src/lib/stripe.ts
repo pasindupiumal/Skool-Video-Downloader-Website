@@ -59,7 +59,7 @@ export async function createStripeCheckoutSession(opts: {
         price_data: {
           currency: "usd",
           unit_amount: Math.round(priceInDollars * 100),
-          product_data: { name: "Skool Video Downloader — Lifetime Access" },
+          product_data: { name: "Video Saver for Skool — Lifetime Access" },
         },
       },
     ],

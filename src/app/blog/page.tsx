@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
 export const metadata = {
-  title: 'Blog | Skool Video Downloader',
+  title: 'Blog | Video Saver for Skool',
   description: 'Latest guides and strategies for Skool community growth and video archival.',
 };
 
@@ -143,13 +143,13 @@ export default async function BlogList() {
           position: relative;
           overflow: hidden;
         }
-        .blog-card-image img {
+        .blog-card-image img, .blog-card-image video {
           width: 100%;
           height: 100%;
           object-fit: cover;
           transition: transform 0.5s ease;
         }
-        .blog-card:hover .blog-card-image img {
+        .blog-card:hover .blog-card-image video {
           transform: scale(1.05);
         }
         .blog-card-content {
@@ -195,8 +195,8 @@ export default async function BlogList() {
         <header className="index-header">
           <div className="header-container">
             <a className="header-logo" href="/">
-              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Skool Video Downloader Logo" />
-              <span>Skool Video Downloader</span>
+              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Video Saver for Skool Logo" />
+              <span>Video Saver for Skool</span>
             </a>
             <nav className="header-nav">
               <a href="/#features">Features</a>
@@ -209,9 +209,9 @@ export default async function BlogList() {
 
         <section className="blog-hero">
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <h1>Skool Mastery Blog</h1>
+            <h1>Video Saver for Skool Blog</h1>
             <p style={{ fontSize: '1.25rem', color: '#6B7280', marginBottom: '32px' }}>
-              The definitive resource for Skool community builders. Growth hacks, technical guides, and automation strategies.
+              Guides and tips for saving, organizing, and watching your Skool videos offline.
             </p>
             <div className="categories">
               <a href="/blog" className="category-pill active">All Articles</a>
@@ -225,7 +225,7 @@ export default async function BlogList() {
         <main className="site-main" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
           {featuredPost && (
             <Link href={`/blog/${featuredPost.slug}`} className="featured-card" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="featured-image"></div>
+              <div className="featured-image" style={{ background: '#000', overflow: 'hidden' }}><video src="/assets/videos/demo.mp4#t=0.001" preload="metadata" muted playsInline tabIndex={-1} aria-hidden="true" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} /></div>
               <div className="featured-content">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
                   <span style={{ background: '#ecfdf5', color: '#10b981', padding: '4px 12px', borderRadius: '99px', fontSize: '0.875rem', fontWeight: '600' }}>
@@ -250,7 +250,7 @@ export default async function BlogList() {
             {otherPosts.map((post: any) => (
               <Link href={`/blog/${post.slug}`} key={post.slug} className="blog-card">
                 <div className="blog-card-image">
-                  <img src="/assets/images/img_be50355231.png" alt={post.title} />
+                  <video src="/assets/videos/demo.mp4#t=0.001" preload="metadata" muted playsInline tabIndex={-1} aria-label={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
                 </div>
                 <div className="blog-card-content">
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
@@ -267,7 +267,7 @@ export default async function BlogList() {
                   </p>
                   <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{post.date}</span>
-                    <span style={{ color: '#111827', fontWeight: '600' }}>Learn More →</span>
+                    <span style={{ color: '#111827', fontWeight: '600' }}>Read Guide →</span>
                   </div>
                 </div>
               </Link>
@@ -275,9 +275,9 @@ export default async function BlogList() {
           </div>
 
           <section className="newsletter-section">
-            <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '16px' }}>Never miss a Skool update</h2>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '16px' }}>Get new Skool video guides</h2>
             <p style={{ fontSize: '1.25rem', color: '#9CA3AF', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>
-              Join 5,000+ community owners receiving our weekly digest of growth strategies and technical insights.
+              Be the first to hear about new tutorials and Video Saver for Skool updates.
             </p>
             <form style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <input type="email" placeholder="Enter your email" className="newsletter-input" required />
@@ -292,48 +292,25 @@ export default async function BlogList() {
             <div className="footer-features">
               <h4 className="footer-section-title">Features</h4>
               <div className="footer-features-grid">
-                <a className="footer-feature-link" href="/#video-detect">Video Inspector</a>
-                <a className="footer-feature-link" href="/#live-text-editor">Mux Video Support</a>
-                <a className="footer-feature-link" href="/#font-changer">Wistia Support</a>
-                <a className="footer-feature-link" href="/#font-detection">Native Skool Player</a>
-                <a className="footer-feature-link" href="/#quality-select">Format Selector</a>
-                <a className="footer-feature-link" href="/#color-palette">Classroom Lesson Saver</a>
-                <a className="footer-feature-link" href="/#open-multiple-urls">Community Post Video</a>
-                <a className="footer-feature-link" href="/#todo-tasks">Module Archiver</a>
-                <a className="footer-feature-link" href="/#redirect-path">HLS to MP4 Converter</a>
-                <a className="footer-feature-link" href="/#reader-mode">Local Processing</a>
-                <a className="footer-feature-link" href="/#api-tester">Zero Data Tracking</a>
-                <a className="footer-feature-link" href="/#element-mover">Member-Only Access</a>
-                <a className="footer-feature-link" href="/#element-deleter">Fast Download Speed</a>
-                <a className="footer-feature-link" href="/#element-exporter">Export Element</a>
-                <a className="footer-feature-link" href="/#image-extractor">Extract Images</a>
-                <a className="footer-feature-link" href="/#batch-save">Batch Downloader</a>
-                <a className="footer-feature-link" href="/#page-outliner">Direct File Save</a>
-                <a className="footer-feature-link" href="/image-replacer">Image Replacer</a>
-                <a className="footer-feature-link" href="/#screenshot-tool">Take Screenshot</a>
-                <a className="footer-feature-link" href="/#seo-meta-inspector">Smart Page Scan</a>
-                <a className="footer-feature-link" href="/#clear-browsing-data">Secure OTP Login</a>
-                <a className="footer-feature-link" href="/#site-stack">Site Stack</a>
-                <a className="footer-feature-link" href="/#responsive-viewer">Responsive Viewer</a>
-                <a className="footer-feature-link" href="/#page-speed-insights">Cross-Browser Build</a>
-                <a className="footer-feature-link" href="/#meta-tags-preview">Regular Updates</a>
-                <a className="footer-feature-link" href="/#accessibility-tools">Email Support</a>
-                <a className="footer-feature-link" href="/#cookie-editor">No Ads or Tracking</a>
-                <a className="footer-feature-link" href="/#table-capture">Concurrent Downloads</a>
-                <a className="footer-feature-link" href="/#email-finder">Download Manager</a>
-                <a className="footer-feature-link" href="/#currency-converter">Quality Selector</a>
-                <a className="footer-feature-link" href="/#stripe-analytics">Windows / Mac / Linux</a>
-                <a className="footer-feature-link" href="/#save-as-pdf">No Subscription Fees</a>
-                <a className="footer-feature-link" href="/#web-scraper">One-Click Download</a>
-                <a className="footer-feature-link" href="/#broken-link-checker">Independent Product</a>
-                <a className="footer-feature-link" href="/#webpage-to-markdown">Easy Installation</a>
+                <a className="footer-feature-link" href="/#features">Video Saver for Skool</a>
+                <a className="footer-feature-link" href="/#features">Loom Video Downloader</a>
+                <a className="footer-feature-link" href="/#features">Vimeo Video Downloader</a>
+                <a className="footer-feature-link" href="/#features">Wistia Video Downloader</a>
+                <a className="footer-feature-link" href="/#features">Native Skool Player</a>
+                <a className="footer-feature-link" href="/#features">HLS to MP4 Conversion</a>
+                <a className="footer-feature-link" href="/#features">Live Download Progress</a>
+                <a className="footer-feature-link" href="/#features">Local, Private Processing</a>
+                <a className="footer-feature-link" href="/#pricing">Lifetime License</a>
+                <a className="footer-feature-link" href="/#pricing">Monthly Plan</a>
+                <a className="footer-feature-link" href="/dashboard">Your Dashboard</a>
+                <a className="footer-feature-link" href="/blog">Guides &amp; Tutorials</a>
               </div>
             </div>
             <div className="footer-divider"></div>
             <div className="footer-bottom">
               <div className="footer-brand">
-                <img src="/assets/images/img_987e4189cb.png" alt="Skool Video Downloader logo" className="footer-logo" />
-                <span>© 2026 Skool Video Downloader</span>
+                <img src="/assets/images/img_987e4189cb.png" alt="Video Saver for Skool logo" className="footer-logo" />
+                <span>© 2026 Video Saver for Skool</span>
               </div>
               <div className="footer-links">
                 <a href="/#pricing">Pricing</a>
@@ -344,7 +321,7 @@ export default async function BlogList() {
                 <a href="/dmca">DMCA</a>
               </div>
               <div className="footer-meta">
-                <span>Version 2.2.1</span>
+                <span>Version 2.3.0</span>
                 <span className="footer-separator">•</span>
                 <span>Chrome Extension</span>
                 <span className="footer-separator">•</span>

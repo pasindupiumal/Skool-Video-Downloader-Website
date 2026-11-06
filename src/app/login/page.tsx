@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import LoginClient from "./login-client";
 
 export const metadata = {
-  title: 'Login | Skool Video Downloader',
+  title: 'Login | Video Saver for Skool',
   description: 'Login to your account.',
 };
 

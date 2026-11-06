@@ -45,12 +45,12 @@ export default function AdminLoginClient() {
           <div className="auth-header">
             <a className="auth-logo" href="/">
               <img
-                alt="Skool Video Downloader"
+                alt="Video Saver for Skool"
                 width={32}
                 height={32}
                 src="/assets/images/img_cb47fedab1.png"
               />
-              <span>Skool Video Downloader</span>
+              <span>Video Saver for Skool</span>
             </a>
             <h1>Admin Login</h1>
             <p>Restricted area. Authorized staff only.</p>
