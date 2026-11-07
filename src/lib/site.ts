@@ -7,3 +7,9 @@ export const CHROME_STORE_URL =
 
 // Discord server invite, used for customer support links.
 export const DISCORD_INVITE_URL = "https://discord.gg/NCnd8yJ5aR";
+
+// Canonical production origin. Vercel redirects the apex to www, so everything
+// that emits absolute URLs (canonicals, sitemap, OG, JSON-LD) must use this.
+export const SITE_URL = "https://www.skoolvideosaver.com";
+export const SITE_NAME = "Video Saver for Skool";
+export const FREE_DOWNLOADS = 5;

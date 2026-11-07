@@ -4,7 +4,7 @@ The Chrome extension for saving videos from Skool classroom lessons, community p
 
 ## Features
 - **Native Mux Support:** Save Skool's native video player streams.
-- **Embedded Players:** Works with Loom, Vimeo, and Wistia embeds inside Skool.
+- **Embedded Players:** Works with YouTube, Loom, Vimeo, and Wistia embeds inside Skool.
 - **Local Processing:** Videos are downloaded and converted in your browser, never on our servers.
 
 ## Pricing
@@ -18,8 +18,8 @@ The Chrome extension for saving videos from Skool classroom lessons, community p
 - Unlimited downloads, all supported players, email support. Cancel anytime.
 
 ### Lifetime Pro
-- Price: one-time payment, early-bird tiered pricing starting at $49 and increasing by $10 every 10 sales. See https://skoolvideosaver.com/#pricing for the current price.
-- Unlimited downloads forever, all future updates, one device per license key.
+- Price: one-time payment, early-bird tiered pricing starting at $49 and increasing by $10 every 10 sales. See https://www.skoolvideosaver.com/#pricing for the current price.
+- Unlimited downloads and all future updates for as long as the product exists, one device per license key.
 
 ## Contact
 Support: hello@skoolvideosaver.com

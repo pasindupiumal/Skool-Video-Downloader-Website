@@ -36,11 +36,47 @@ export async function fetchLifetimePricing(): Promise<LifetimePricing> {
 
 // Display-only variant for pages: if the database is down, show the starting
 // tier instead of taking the whole page down with a 500.
+//
+// The homepage calls this on every request, and a cold MongoDB connection can
+// take seconds, which shows up as a slow first byte. So the displayed price is
+// cached briefly in memory (stale-while-revalidate). Checkout never uses this:
+// it always calls fetchLifetimePricing() for the authoritative price.
+const FRESH_MS = 30_000;
+const STALE_MS = 5 * 60_000;
+let cached: { value: LifetimePricing; at: number } | null = null;
+let refreshing: Promise<void> | null = null;
+let lastFailureAt = 0;
+const FAILURE_BACKOFF_MS = 15_000;
+
+function refresh(): Promise<void> {
+  if (!refreshing) {
+    refreshing = fetchLifetimePricing()
+      .then((value) => {
+        cached = { value, at: Date.now() };
+        lastFailureAt = 0;
+      })
+      .catch((err) => {
+        lastFailureAt = Date.now();
+        console.error("Could not load lifetime sales count:", err);
+      })
+      .finally(() => {
+        refreshing = null;
+      });
+  }
+  return refreshing;
+}
+
 export async function fetchLifetimePricingForDisplay(): Promise<LifetimePricing> {
-  try {
-    return await fetchLifetimePricing();
-  } catch (err) {
-    console.error("Could not load lifetime sales count, showing starting price:", err);
+  const age = cached ? Date.now() - cached.at : Infinity;
+  if (cached && age < FRESH_MS) return cached.value;
+  if (cached && age < STALE_MS) {
+    void refresh();
+    return cached.value;
+  }
+  // Database down: don't make every page view wait on a connection timeout.
+  if (!cached && lastFailureAt && Date.now() - lastFailureAt < FAILURE_BACKOFF_MS) {
     return getLifetimePricing(0);
   }
+  await refresh();
+  return cached ? cached.value : getLifetimePricing(0);
 }

@@ -1,17 +1,25 @@
-# Video Saver for Skool
+# Video Saver for Skool (Skool Video Downloader)
 
-The ultimate companion for Skool learners. Save your favorite lessons for offline archival.
+> Chrome extension that downloads Skool videos as MP4 files. Works with Skool's native player, YouTube, Loom, Vimeo and Wistia. Videos are processed locally in the browser. 5 free downloads included.
 
-## Core Capabilities
-- Download videos from Skool classroom modules.
-- Supports Skool native (Mux), Loom, Vimeo, and Wistia. YouTube is not supported.
-- One-click MP4 extraction.
+## Key facts
+- Also searched as: skool video downloader, skool video saver, download skool videos.
+- Supported players: Skool native (Mux/HLS), YouTube, Loom (including password-protected), Vimeo, Wistia.
+- Works on classroom lessons and community post videos you already have access to.
+- Free: 5 downloads in total (trial). Monthly: $20/month. Lifetime Pro: one-time, tiered early-bird pricing (see pricing.md).
+- Refunds: 14 days. Support: hello@skoolvideosaver.com
 
-## Links
-- [Homepage](https://skoolvideosaver.com)
-- [Pricing](/pricing.md)
-- [Blog](/blog)
-- [Terms](/terms)
-
-## Pricing Summary
-- **Lifetime Pro:** $29 one-time payment for unlimited access.
+## Pages
+- [Homepage](https://www.skoolvideosaver.com/): features, pricing, FAQ
+- [Pricing details](https://www.skoolvideosaver.com/pricing.md)
+- [Blog](https://www.skoolvideosaver.com/blog): guides
+- [How to download Skool videos](https://www.skoolvideosaver.com/blog/how-to-download-skool-videos)
+- [Download Skool videos for free](https://www.skoolvideosaver.com/blog/download-skool-videos-free)
+- [Download Loom videos from Skool](https://www.skoolvideosaver.com/blog/download-loom-videos-from-skool)
+- [Save a Skool course before access ends](https://www.skoolvideosaver.com/blog/save-skool-course-before-membership-expires)
+- [Is it legal to download Skool videos?](https://www.skoolvideosaver.com/blog/is-it-legal-to-download-skool-videos)
+- [Skool video downloader alternatives](https://www.skoolvideosaver.com/blog/skool-video-downloader-alternatives)
+- [Video Saver for Skool vs Downloader for Skool](https://www.skoolvideosaver.com/blog/video-saver-for-skool-vs-downloader-for-skool)
+- [yt-dlp vs extension for Skool videos](https://www.skoolvideosaver.com/blog/yt-dlp-vs-extension-for-skool-videos)
+- [Video Saver for Skool vs Skool Video Download Tools](https://www.skoolvideosaver.com/blog/video-saver-for-skool-vs-skool-video-download-tools)
+- [Terms](https://www.skoolvideosaver.com/terms) · [Privacy](https://www.skoolvideosaver.com/privacy) · [Refunds](https://www.skoolvideosaver.com/refund-policy)
