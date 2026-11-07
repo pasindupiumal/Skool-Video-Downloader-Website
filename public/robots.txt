@@ -3,5 +3,23 @@ Allow: /
 Disallow: /dashboard
 Disallow: /admin
 Disallow: /api/
+Disallow: /thank-you
+Disallow: /image-replacer
 
-Sitemap: https://skoolvideosaver.com/sitemap.xml
+# AI search / answer-engine crawlers are welcome on the public marketing pages.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://www.skoolvideosaver.com/sitemap.xml

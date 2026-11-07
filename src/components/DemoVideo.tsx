@@ -32,7 +32,8 @@ export default function DemoVideo() {
       <video
         ref={ref}
         playsInline
-        preload="metadata"
+        preload="none"
+        poster="/assets/videos/demo-poster.webp"
         controlsList="nodownload noremoteplayback"
         disablePictureInPicture
         onContextMenu={(e) => e.preventDefault()}

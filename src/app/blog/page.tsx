@@ -1,309 +1,366 @@
 import React from 'react';
-import { CHROME_STORE_URL } from "@/lib/site";
+import { CHROME_STORE_URL, SITE_URL, SITE_NAME } from "@/lib/site";
+import { jsonLd, blogCollectionSchema, breadcrumbSchema } from "@/lib/seo";
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
-export const metadata = {
-  title: 'Blog | Video Saver for Skool',
-  description: 'Latest guides and strategies for Skool community growth and video archival.',
+export const metadata: Metadata = {
+  title: 'Skool Video Downloader Blog: Guides & Comparisons (2026)',
+  description:
+    'Guides for saving Skool lessons as MP4: how-to steps, Loom and free-plan guides, tool comparisons, and the rules on personal offline use.',
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    type: 'website',
+    url: `${SITE_URL}/blog`,
+    title: 'Skool Video Downloader Guides & Comparisons | Video Saver for Skool',
+    description:
+      'Step-by-step guides and tool comparisons for saving Skool classroom lessons and community replays as MP4 files.',
+    siteName: SITE_NAME,
+    images: [{ url: `${SITE_URL}/opengraph-image.jpg`, width: 1200, height: 630, alt: 'Video Saver for Skool guides and comparisons' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@skoolvideosaver',
+    title: 'Skool Video Downloader Guides & Comparisons (2026)',
+    description: 'How to save Skool videos as MP4, which tools exist, and what the rules are. 5 free downloads included.',
+    images: [`${SITE_URL}/opengraph-image.jpg`],
+  },
 };
+
+type Post = {
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  readingTime: string;
+  lastUpdated?: string;
+  date?: string;
+  [key: string]: unknown;
+};
+
+// Reader goals, in the order we want to present them. Titles and one-liners are written for the hub.
+const PATHS: { slug: string; goal: string; blurb: string; tag: string }[] = [
+  { slug: 'how-to-download-skool-videos', goal: 'Save a lesson as an MP4', blurb: 'The full walkthrough: install, click Download, pick a quality. Covers every supported player and what to do when the button is missing.', tag: 'Start here' },
+  { slug: 'download-skool-videos-free', goal: 'Try it before paying', blurb: 'What the 5 free downloads include, how they compare with other free options, and when upgrading makes sense.', tag: 'Free plan' },
+  { slug: 'download-loom-videos-from-skool', goal: 'Save a Loom video', blurb: 'How embedded Loom lessons work in Skool, including password-protected ones you can already watch.', tag: 'Loom' },
+  { slug: 'save-skool-course-before-membership-expires', goal: 'Archive a course before access ends', blurb: 'A checklist for backing up classroom lessons and call replays while your membership is still active.', tag: 'Checklist' },
+  { slug: 'skool-video-downloader-alternatives', goal: 'Compare the tools', blurb: 'Two other extensions and the open-source yt-dlp, compared on players, free limits and price from their public listings.', tag: 'Comparison' },
+  { slug: 'yt-dlp-vs-extension-for-skool-videos', goal: 'Use the terminal instead', blurb: 'The yt-dlp workflow for Skool, how to fix HTTP 403 errors, and when an extension saves you the manual steps.', tag: 'Technical' },
+];
+
+const QUICK_ANSWERS: { q: string; a: React.ReactNode }[] = [
+  {
+    q: 'Can you download videos from Skool?',
+    a: <>Skool has no built-in download button for most lessons. A browser extension such as Video Saver for Skool can save lessons you already have access to as MP4 files. Start with the <Link href="/blog/how-to-download-skool-videos">step-by-step guide</Link>.</>,
+  },
+  {
+    q: 'Which video players are covered?',
+    a: <>Video Saver for Skool supports Skool&apos;s native player and YouTube, Loom, Vimeo and Wistia embeds. The <Link href="/blog/download-loom-videos-from-skool">Loom guide</Link> covers password-protected videos.</>,
+  },
+  {
+    q: 'Is there a free way to do it?',
+    a: <>Video Saver for Skool includes 5 free downloads, then costs $20/month or a one-time Lifetime Pro plan. The open-source yt-dlp is free if you are comfortable in a terminal. See the <Link href="/blog/download-skool-videos-free">free-plan guide</Link>.</>,
+  },
+  {
+    q: 'Is it legal?',
+    a: <>It depends on your country&apos;s copyright rules and your community&apos;s terms. The tool is meant for personal offline study of content you can already access, not for sharing or reselling. This is general information, not legal advice. Read <Link href="/blog/is-it-legal-to-download-skool-videos">the full explanation</Link>.</>,
+  },
+  {
+    q: 'Does it work on a phone or tablet?',
+    a: <>No. Video Saver for Skool is a desktop extension for Chromium browsers (Chrome, Brave, Edge, Opera). Download on a computer, then copy the MP4 to your device.</>,
+  },
+];
+
+function readTimeFor(content: string) {
+  const words = content.replace(/[#*`|>-]/g, ' ').split(/\s+/).filter(Boolean).length;
+  return `${Math.max(3, Math.ceil(words / 200))} min read`;
+}
 
 export default async function BlogList() {
   const session = await getServerSession(authOptions);
-  const postsDirectory = path.join(process.cwd(), 'content/blog');
-  const filenames = fs.readdirSync(postsDirectory);
+  const dir = path.join(process.cwd(), 'content/blog');
+  const posts: Post[] = fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.md'))
+    .map((filename) => {
+      const { data, content } = matter(fs.readFileSync(path.join(dir, filename), 'utf8'));
+      return {
+        slug: filename.replace('.md', ''),
+        readingTime: readTimeFor(content),
+        ...data,
+      } as Post;
+    });
 
-  const posts: any[] = filenames.map((filename) => {
-    const filePath = path.join(postsDirectory, filename);
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    const { data, content } = matter(fileContents);
-    
-    // Estimate reading time
-    const wordsPerMinute = 200;
-    const noOfWords = content.split(/\s/g).length;
-    const minutes = Math.ceil(noOfWords / wordsPerMinute);
-    
-    return {
-      slug: filename.replace('.md', ''),
-      readingTime: `${minutes} min read`,
-      ...data,
-    };
-  }).sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const bySlug = (slug: string) => posts.find((p) => p.slug === slug);
+  const orderedSlugs = [
+    ...PATHS.map((p) => p.slug),
+    'video-saver-for-skool-vs-downloader-for-skool',
+    'video-saver-for-skool-vs-skool-video-download-tools',
+    'is-it-legal-to-download-skool-videos',
+  ];
+  const ordered = orderedSlugs.map(bySlug).filter(Boolean) as Post[];
+  const rest = posts.filter((p) => !orderedSlugs.includes(p.slug));
+  const allOrdered = [...ordered, ...rest];
 
-  const featuredPost = posts[0];
-  const otherPosts = posts.slice(1);
-  const categories = Array.from(new Set(posts.map((p: any) => p.category || 'Guides')));
+  const pillar = bySlug('how-to-download-skool-videos');
+  const lastUpdated = posts
+    .map((p) => String(p.lastUpdated || p.date || ''))
+    .filter(Boolean)
+    .sort()
+    .pop();
 
-  const loginButton = session 
+  const comparisons = allOrdered.filter((p) => p.category === 'Comparisons');
+  const legalFaq = allOrdered.filter((p) => p.category !== 'Comparisons' && !PATHS.some((x) => x.slug === p.slug));
+
+  const loginButton = session
     ? `<a href="/dashboard"><button class="button button--secondary button--small">Dashboard</button></a>`
     : `<a href="/login"><button class="button button--secondary button--small">Login</button></a>`;
-    
   const getItNowButton = session
     ? `<a href="/dashboard" target="_blank"><button class="button button--primary button--small">Get It Now</button></a>`
-    : `<a href="${CHROME_STORE_URL}" target="_blank"><button class="button button--primary button--small">Get It Now</button></a>`;
+    : `<a href="${CHROME_STORE_URL}" target="_blank" rel="noopener noreferrer"><button class="button button--primary button--small">Get It Now</button></a>`;
+
+  const schemas = [
+    blogCollectionSchema(allOrdered as any, lastUpdated),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Blog', path: '/blog' },
+    ]),
+  ];
 
   return (
     <div className="page-blog-list">
-      <link rel="stylesheet" href="/assets/css/image-replacer.css" />
-      <style dangerouslySetInnerHTML={{ __html: `
-        .blog-hero {
-          padding: 100px 20px 60px;
-          background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
-          text-align: center;
-        }
-        .blog-hero h1 {
-          font-size: 4rem;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-          margin-bottom: 20px;
-          background: linear-gradient(135deg, #111827 0%, #374151 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-        .category-pill {
-          display: inline-block;
-          padding: 8px 20px;
-          border-radius: 99px;
-          background: white;
-          border: 1px solid #E5E7EB;
-          color: #4B5563;
-          font-weight: 500;
-          font-size: 0.9rem;
-          margin: 0 6px 12px;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-decoration: none;
-        }
-        .category-pill:hover {
-          border-color: #10b981;
-          color: #10b981;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        .category-pill.active {
-          background: #10b981;
-          border-color: #10b981;
-          color: white;
-        }
-        .featured-card {
-          display: grid;
-          grid-template-columns: 1.2fr 1fr;
-          gap: 0;
-          background: white;
-          border-radius: 24px;
-          overflow: hidden;
-          border: 1px solid #F3F4F6;
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-          margin-bottom: 60px;
-          transition: transform 0.3s ease;
-        }
-        .featured-card:hover {
-          transform: translateY(-4px);
-        }
-        .featured-image {
-          background: #f3f4f6 url('/assets/images/img_a4cd805418.png') no-repeat center center;
-          background-size: cover;
-          min-height: 400px;
-        }
-        .featured-content {
-          padding: 60px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        .blog-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-          gap: 40px;
-          margin-bottom: 80px;
-        }
-        .blog-card {
-          background: white;
-          border-radius: 20px;
-          overflow: hidden;
-          border: 1px solid #F3F4F6;
-          transition: all 0.3s ease;
-          text-decoration: none;
-          color: inherit;
-          display: flex;
-          flex-direction: column;
-        }
-        .blog-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-          border-color: rgba(16, 185, 129, 0.2);
-        }
-        .blog-card-image {
-          height: 240px;
-          background: #F9FAFB;
-          position: relative;
-          overflow: hidden;
-        }
-        .blog-card-image img, .blog-card-image video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-        }
-        .blog-card:hover .blog-card-image video {
-          transform: scale(1.05);
-        }
-        .blog-card-content {
-          padding: 30px;
-          flex: 1;
-        }
-        .newsletter-section {
-          background: #111827;
-          border-radius: 32px;
-          padding: 80px;
-          text-align: center;
-          color: white;
-          margin-bottom: 80px;
-          position: relative;
-          overflow: hidden;
-        }
-        .newsletter-section::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
-        }
-        .newsletter-input {
-          padding: 16px 24px;
-          border-radius: 12px;
-          border: 1px solid #374151;
-          background: #1F2937;
-          color: white;
-          width: 300px;
-          margin-right: 12px;
-          font-size: 1rem;
-        }
-        @media (max-width: 1024px) {
-          .featured-card { grid-template-columns: 1fr; }
-          .blog-hero h1 { font-size: 3rem; }
-        }
-      ` }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schemas) }} />
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .page-blog-list { background:#f6f5f1; color:#0f172a; }
+        .hub-wrap { max-width:1120px; margin:0 auto; padding:0 20px; }
+        .hub-hero { position:relative; overflow:hidden; padding:72px 0 64px; color:#fff; background:linear-gradient(135deg,#061640,#0b2a7a 60%,#2a1b86); }
+        .hub-hero::before { content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px); background-size:46px 46px; -webkit-mask-image:radial-gradient(ellipse at 75% 0%,#000 10%,transparent 70%); mask-image:radial-gradient(ellipse at 75% 0%,#000 10%,transparent 70%); pointer-events:none; }
+        .hub-hero::after { content:""; position:absolute; right:-160px; top:-200px; width:640px; height:640px; border-radius:50%; background:radial-gradient(circle,rgba(99,102,241,.55),transparent 66%); pointer-events:none; }
+        .hub-hero .hub-wrap { position:relative; z-index:1; }
+        .hub-hero-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:40px; align-items:center; }
+        .hub-eyebrow { display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:#0b1220; background:#9cc2ff; padding:5px 12px; border-radius:999px; margin-bottom:16px; }
+        .hub-hero h1 { font-size:clamp(2.1rem,4.2vw,3.25rem); font-weight:800; line-height:1.1; letter-spacing:-.03em; margin:0 0 16px; color:#fff; }
+        .hub-lede { font-size:1.125rem; line-height:1.65; color:rgba(255,255,255,.82); margin:0 0 24px; max-width:560px; }
+        .hub-actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+        .hub-btn { display:inline-block; background:#0b63ff; color:#fff; font-weight:700; padding:13px 22px; border-radius:12px; text-decoration:none; transition:background .2s, transform .2s; }
+        .hub-btn:hover { background:#094fcc; transform:translateY(-1px); }
+        .hub-btn-ghost { display:inline-block; font-weight:600; color:#fff; padding:13px 6px; text-decoration:none; }
+        .hub-btn-ghost:hover { color:#9cc2ff; }
+        .hub-facts { display:flex; flex-wrap:wrap; gap:8px 20px; margin:26px 0 0; padding:0; list-style:none; font-size:.9rem; color:rgba(255,255,255,.8); }
+        .hub-facts li::before { content:"\\2713"; color:#9cc2ff; font-weight:800; margin-right:7px; }
+        .hub-start { background:#fff; color:#0f172a; border-radius:24px; padding:28px; box-shadow:0 28px 70px rgba(0,0,0,.35); position:relative; }
+        .hub-start-tag { font-size:.75rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#0a4fc4; }
+        .hub-start h2 { font-size:1.45rem; line-height:1.25; margin:8px 0 10px; font-weight:800; }
+        .hub-start p { color:#475569; line-height:1.6; margin:0 0 16px; font-size:.98rem; }
+        .hub-start ol { list-style:none; margin:0 0 20px; padding:0; counter-reset:s; display:grid; gap:10px; }
+        .hub-start li { counter-increment:s; display:flex; gap:12px; align-items:flex-start; font-size:.95rem; color:#334155; }
+        .hub-start li::before { content:counter(s); flex:0 0 26px; height:26px; border-radius:50%; background:#dbe8ff; color:#0b63ff; font-weight:800; font-size:.8rem; display:flex; align-items:center; justify-content:center; }
+        .hub-link { font-weight:700; color:#0a4fc4; text-decoration:none; }
+        .hub-link:hover { text-decoration:underline; }
+        .hub-section { padding:56px 0 8px; }
+        .hub-section h2 { font-size:1.75rem; font-weight:800; letter-spacing:-.015em; margin:0 0 8px; }
+        .hub-sub { color:#64748b; margin:0 0 28px; font-size:1.03rem; max-width:640px; line-height:1.6; }
+        .hub-paths { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+        .hub-path { display:flex; flex-direction:column; background:#fff; border:1px solid #e7e5df; border-radius:20px; padding:22px; text-decoration:none; color:inherit; transition:transform .2s, box-shadow .2s, border-color .2s; }
+        .hub-path { border-top:4px solid #0b63ff; }
+        .hub-path:nth-child(3n+2) { border-top-color:#7c3aed; }
+        .hub-path:nth-child(3n) { border-top-color:#059669; }
+        .hub-path:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(15,23,42,.09); border-color:#c7d7f5; }
+        .hub-path-tag { align-self:flex-start; font-size:.72rem; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:#475569; background:#f1efe9; padding:4px 10px; border-radius:999px; margin-bottom:14px; }
+        .hub-path h3 { font-size:1.15rem; font-weight:800; line-height:1.3; margin:0 0 8px; }
+        .hub-path p { color:#475569; font-size:.95rem; line-height:1.6; margin:0 0 16px; flex:1; }
+        .hub-path-meta { display:flex; justify-content:space-between; font-size:.85rem; color:#64748b; border-top:1px solid #efede7; padding-top:12px; }
+        .hub-path-meta strong { color:#0b63ff; }
+        .hub-list { background:#fff; border:1px solid #e7e5df; border-radius:20px; overflow:hidden; }
+        .hub-row { display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center; padding:20px 24px; text-decoration:none; color:inherit; border-bottom:1px solid #efede7; transition:background .15s; }
+        .hub-row:last-child { border-bottom:0; }
+        .hub-row:hover { background:#f8faff; }
+        .hub-row h3 { font-size:1.05rem; font-weight:700; margin:0 0 4px; line-height:1.35; }
+        .hub-row p { margin:0; color:#64748b; font-size:.92rem; line-height:1.55; }
+        .hub-row-meta { text-align:right; font-size:.82rem; color:#64748b; white-space:nowrap; }
+        .hub-row-meta strong { display:block; color:#0b63ff; margin-top:4px; }
+        .hub-faq { display:grid; gap:10px; max-width:820px; }
+        .hub-faq details { background:#fff; border:1px solid #e7e5df; border-radius:14px; padding:0 20px; }
+        .hub-faq summary { cursor:pointer; font-weight:700; padding:18px 0; list-style:none; display:flex; justify-content:space-between; gap:12px; }
+        .hub-faq summary::-webkit-details-marker { display:none; }
+        .hub-faq summary::after { content:"+"; font-size:1.3rem; color:#0b63ff; line-height:1; }
+        .hub-faq details[open] summary::after { content:"\\2212"; }
+        .hub-faq details p { margin:0 0 18px; color:#475569; line-height:1.65; }
+        .hub-faq a { color:#0b63ff; font-weight:600; }
+        .hub-standards { margin:56px 0 0; padding:22px 26px; background:#fff; border:1px solid #e7e5df; border-left:4px solid #0b63ff; border-radius:14px; color:#475569; line-height:1.65; font-size:.95rem; }
+        .hub-standards strong { color:#0f172a; }
+        .hub-standards a { color:#0b63ff; font-weight:600; }
+        .hub-cta { margin:56px 0 72px; background:#0f172a; border-radius:28px; padding:48px 32px; text-align:center; color:#fff; }
+        .hub-cta h2 { font-size:1.9rem; font-weight:800; margin:0 0 10px; color:#fff; }
+        .hub-cta p { color:#cbd5e1; max-width:560px; margin:0 auto 24px; line-height:1.6; }
+        .hub-cta .hub-btn { margin:0 6px 8px; }
+        .hub-cta .hub-btn-alt { background:transparent; border:1px solid #ffffff40; }
+        .hub-cta .hub-btn-alt:hover { background:#ffffff14; }
+        @media (max-width:960px) { .hub-hero-grid { grid-template-columns:1fr; } .hub-paths { grid-template-columns:repeat(2,1fr); } }
+        @media (max-width:600px) { .hub-hero { padding:44px 0 28px; } .hub-paths { grid-template-columns:1fr; } .hub-row { grid-template-columns:1fr; } .hub-row-meta { text-align:left; } .hub-cta { padding:36px 20px; border-radius:22px; } }
+      `,
+        }}
+      />
 
       <div className="page-index site-layout">
         <header className="index-header">
           <div className="header-container">
             <a className="header-logo" href="/">
-              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Video Saver for Skool Logo" />
+              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Video Saver for Skool logo" />
               <span>Video Saver for Skool</span>
             </a>
             <nav className="header-nav">
               <a href="/#features">Features</a>
-              <a href="/#reviews">Reviews</a>
               <a href="/#pricing">Pricing</a>
+              <a href="/blog" style={{ fontWeight: 600, color: '#0b63ff' }}>Guides</a>
             </nav>
             <div className="header-actions" dangerouslySetInnerHTML={{ __html: loginButton + getItNowButton }} />
           </div>
         </header>
 
-        <section className="blog-hero">
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <h1>Video Saver for Skool Blog</h1>
-            <p style={{ fontSize: '1.25rem', color: '#6B7280', marginBottom: '32px' }}>
-              Guides and tips for saving, organizing, and watching your Skool videos offline.
-            </p>
-            <div className="categories">
-              <a href="/blog" className="category-pill active">All Articles</a>
-              {categories.map(cat => (
-                <a key={cat} href={`/blog?category=${cat.toLowerCase()}`} className="category-pill">{cat}</a>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <main className="site-main" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
-          {featuredPost && (
-            <Link href={`/blog/${featuredPost.slug}`} className="featured-card" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="featured-image" style={{ background: '#000', overflow: 'hidden' }}><video src="/assets/videos/demo.mp4#t=0.001" preload="metadata" muted playsInline tabIndex={-1} aria-hidden="true" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} /></div>
-              <div className="featured-content">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-                  <span style={{ background: '#ecfdf5', color: '#10b981', padding: '4px 12px', borderRadius: '99px', fontSize: '0.875rem', fontWeight: '600' }}>
-                    FEATURED
-                  </span>
-                  <span style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>{featuredPost.date}</span>
+        <main>
+          <section className="hub-hero">
+            <div className="hub-wrap hub-hero-grid">
+              <div>
+                <span className="hub-eyebrow">Guides{lastUpdated ? ` · Updated ${lastUpdated}` : ''}</span>
+                <h1>Skool Video Downloader Guides &amp; Comparisons</h1>
+                <p className="hub-lede">
+                  How to save Skool lessons and community replays as MP4 files, how the available tools differ, and what the rules are. Written by the team behind Video Saver for Skool, so product claims are labelled as ours.
+                </p>
+                <div className="hub-actions">
+                  <a className="hub-btn" href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">Add to Chrome - 5 free downloads</a>
+                  <a className="hub-btn-ghost" href="#paths">Find the right guide ↓</a>
                 </div>
-                <h2 style={{ fontSize: '2.5rem', fontWeight: '800', lineHeight: '1.2', marginBottom: '20px' }}>{featuredPost.title}</h2>
-                <p style={{ fontSize: '1.125rem', color: '#4B5563', lineHeight: '1.6', marginBottom: '32px' }}>{featuredPost.description}</p>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#eee' }}></div>
-                    <span style={{ fontWeight: '600', color: '#111827' }}>{featuredPost.author || 'Editorial Team'}</span>
-                  </div>
-                  <span style={{ color: '#10b981', fontWeight: '700', fontSize: '1.1rem' }}>Read Article →</span>
-                </div>
+                <ul className="hub-facts">
+                  <li>Skool native, YouTube, Loom, Vimeo, Wistia</li>
+                  <li>Processed locally in your browser</li>
+                  <li>14-day refund</li>
+                </ul>
               </div>
-            </Link>
-          )}
-
-          <div className="blog-grid">
-            {otherPosts.map((post: any) => (
-              <Link href={`/blog/${post.slug}`} key={post.slug} className="blog-card">
-                <div className="blog-card-image">
-                  <video src="/assets/videos/demo.mp4#t=0.001" preload="metadata" muted playsInline tabIndex={-1} aria-label={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
-                </div>
-                <div className="blog-card-content">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
-                    <span style={{ color: '#10b981', fontSize: '0.875rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                      {post.category || 'GUIDE'}
-                    </span>
-                    <span style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>{post.readingTime}</span>
-                  </div>
-                  <h3 style={{ fontSize: '1.5rem', fontWeight: '700', lineHeight: '1.4', marginBottom: '16px', color: '#111827' }}>
-                    {post.title}
-                  </h3>
-                  <p style={{ color: '#6B7280', fontSize: '1rem', lineHeight: '1.6', marginBottom: '24px' }}>
-                    {post.description}
-                  </p>
-                  <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '0.875rem', color: '#9CA3AF' }}>{post.date}</span>
-                    <span style={{ color: '#111827', fontWeight: '600' }}>Read Guide →</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <section className="newsletter-section">
-            <h2 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '16px' }}>Get new Skool video guides</h2>
-            <p style={{ fontSize: '1.25rem', color: '#9CA3AF', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px' }}>
-              Be the first to hear about new tutorials and Video Saver for Skool updates.
-            </p>
-            <form style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <input type="email" placeholder="Enter your email" className="newsletter-input" required />
-              <button type="submit" className="button button--primary" style={{ padding: '16px 32px' }}>Subscribe Now</button>
-            </form>
-            <p style={{ fontSize: '0.875rem', color: '#4B5563', marginTop: '20px' }}>Zero spam. Unsubscribe at any time.</p>
+              {pillar && (
+                <aside className="hub-start" aria-label="Start here">
+                  <span className="hub-start-tag">Start here</span>
+                  <h2>{pillar.title}</h2>
+                  <p>{pillar.description}</p>
+                  <ol>
+                    <li>Install the extension and sign in</li>
+                    <li>Open the lesson or community post</li>
+                    <li>Click Download on the video</li>
+                    <li>Choose a quality and save the MP4</li>
+                  </ol>
+                  <Link className="hub-link" href={`/blog/${pillar.slug}`}>Read the full guide →</Link>
+                </aside>
+              )}
+            </div>
           </section>
+
+          <div className="hub-wrap">
+            <section className="hub-section" id="paths" aria-labelledby="paths-h">
+              <h2 id="paths-h">What do you want to do?</h2>
+              <p className="hub-sub">Pick the goal closest to yours. Each guide answers one question in full.</p>
+              <div className="hub-paths">
+                {PATHS.map((p) => {
+                  const post = bySlug(p.slug);
+                  if (!post) return null;
+                  return (
+                    <Link key={p.slug} href={`/blog/${p.slug}`} className="hub-path">
+                      <span className="hub-path-tag">{p.tag}</span>
+                      <h3>{p.goal}</h3>
+                      <p>{p.blurb}</p>
+                      <div className="hub-path-meta">
+                        <span>{post.readingTime}</span>
+                        <strong>Read guide →</strong>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+
+            <section className="hub-section" aria-labelledby="cmp-h">
+              <h2 id="cmp-h">Tool comparisons</h2>
+              <p className="hub-sub">Competitor details come from each tool&apos;s public Chrome Web Store listing, checked on the date shown in each article. We make Video Saver for Skool, so read these with that in mind.</p>
+              <div className="hub-list">
+                {comparisons.map((p) => (
+                  <Link key={p.slug} href={`/blog/${p.slug}`} className="hub-row">
+                    <div>
+                      <h3>{p.title}</h3>
+                      <p>{p.description}</p>
+                    </div>
+                    <div className="hub-row-meta">
+                      {p.readingTime}
+                      <strong>Read →</strong>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
+            {legalFaq.length > 0 && (
+              <section className="hub-section" aria-labelledby="rules-h">
+                <h2 id="rules-h">Rules and responsible use</h2>
+                <p className="hub-sub">Before you download, know where personal study ends and redistribution begins.</p>
+                <div className="hub-list">
+                  {legalFaq.map((p) => (
+                    <Link key={p.slug} href={`/blog/${p.slug}`} className="hub-row">
+                      <div>
+                        <h3>{p.title}</h3>
+                        <p>{p.description}</p>
+                      </div>
+                      <div className="hub-row-meta">
+                        {p.readingTime}
+                        <strong>Read →</strong>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <section className="hub-section" aria-labelledby="faq-h">
+              <h2 id="faq-h">Quick answers</h2>
+              <p className="hub-sub">The short versions. Each links to the full guide.</p>
+              <div className="hub-faq">
+                {QUICK_ANSWERS.map((item) => (
+                  <details key={item.q}>
+                    <summary>{item.q}</summary>
+                    <p>{item.a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+
+            <p className="hub-standards">
+              <strong>Editorial standards.</strong> Facts about Video Saver for Skool are checked against the current extension, pricing page and refund policy. Facts about other tools come from their public listings or project pages. Each article shows when it was last reviewed. Found a mistake? Email <a href="mailto:hello@skoolvideosaver.com">hello@skoolvideosaver.com</a>.
+            </p>
+
+            <section className="hub-cta" aria-label="Install the extension">
+              <h2>Save your Skool lessons as MP4</h2>
+              <p>Test it on your own lessons with 5 free downloads. No credit card required. After that, $20/month or a one-time Lifetime Pro plan.</p>
+              <a className="hub-btn" href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">Add to Chrome - 5 free downloads</a>
+              <a className="hub-btn hub-btn-alt" href="/#pricing">See pricing</a>
+            </section>
+          </div>
         </main>
 
         <footer className="site-footer">
           <div className="footer-container">
             <div className="footer-features">
-              <h4 className="footer-section-title">Features</h4>
+              <h4 className="footer-section-title" aria-level={3}>Guides</h4>
               <div className="footer-features-grid">
-                <a className="footer-feature-link" href="/#features">Video Saver for Skool</a>
-                <a className="footer-feature-link" href="/#features">Loom Video Downloader</a>
-                <a className="footer-feature-link" href="/#features">Vimeo Video Downloader</a>
-                <a className="footer-feature-link" href="/#features">Wistia Video Downloader</a>
-                <a className="footer-feature-link" href="/#features">Native Skool Player</a>
-                <a className="footer-feature-link" href="/#features">HLS to MP4 Conversion</a>
-                <a className="footer-feature-link" href="/#features">Live Download Progress</a>
-                <a className="footer-feature-link" href="/#features">Local, Private Processing</a>
-                <a className="footer-feature-link" href="/#pricing">Lifetime License</a>
-                <a className="footer-feature-link" href="/#pricing">Monthly Plan</a>
-                <a className="footer-feature-link" href="/dashboard">Your Dashboard</a>
-                <a className="footer-feature-link" href="/blog">Guides &amp; Tutorials</a>
+                {allOrdered.map((p) => (
+                  <a key={p.slug} className="footer-feature-link" href={`/blog/${p.slug}`}>
+                    {PATHS.find((x) => x.slug === p.slug)?.goal || p.title}
+                  </a>
+                ))}
+                <a className="footer-feature-link" href="/#pricing">Pricing</a>
               </div>
             </div>
             <div className="footer-divider"></div>
@@ -314,6 +371,7 @@ export default async function BlogList() {
               </div>
               <div className="footer-links">
                 <a href="/#pricing">Pricing</a>
+                <a href="/blog">Blog</a>
                 <a href="/contact">Contact</a>
                 <a href="/privacy">Privacy</a>
                 <a href="/terms">Terms</a>
@@ -321,8 +379,6 @@ export default async function BlogList() {
                 <a href="/dmca">DMCA</a>
               </div>
               <div className="footer-meta">
-                <span>Version 2.3.0</span>
-                <span className="footer-separator">•</span>
                 <span>Chrome Extension</span>
                 <span className="footer-separator">•</span>
                 <a href="mailto:hello@skoolvideosaver.com" className="footer-email">hello@skoolvideosaver.com</a>

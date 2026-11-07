@@ -6,7 +6,9 @@ import LoginClient from "./login-client";
 
 export const metadata = {
   title: 'Login | Video Saver for Skool',
-  description: 'Login to your account.',
+  description: 'Log in to manage your Video Saver for Skool license and downloads.',
+  alternates: { canonical: '/login' },
+  robots: { index: false, follow: false },
 };
 
 export default async function Page() {

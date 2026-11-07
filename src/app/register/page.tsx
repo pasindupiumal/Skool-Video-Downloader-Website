@@ -6,7 +6,9 @@ import RegisterClient from "./register-client";
 
 export const metadata = {
   title: 'Sign Up | Video Saver for Skool',
-  description: 'Create your account.',
+  description: 'Create an account to get your 5 free Skool video downloads.',
+  alternates: { canonical: '/register' },
+  robots: { index: false, follow: false },
 };
 
 export default async function Page() {
