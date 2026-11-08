@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getDeviceUsage, getEffectiveFreeUsage } from "@/lib/freeQuota";
+import { capByIpPool, getDeviceUsage, getEffectiveFreeUsage, ipKeyFrom } from "@/lib/freeQuota";
 import { checkLicenseKey, findUserWithAccess, licenseKeyFrom, resolveUserEmail } from "@/lib/downloadAccess";
 
 export const dynamic = 'force-dynamic';
@@ -12,6 +12,7 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const deviceId = url.searchParams.get("deviceId");
     const licenseKey = licenseKeyFrom(req, url.searchParams.get("licenseKey"));
+    const ipKey = ipKeyFrom(req);
 
     if (licenseKey) {
       const license = await checkLicenseKey(licenseKey, deviceId);
@@ -48,7 +49,7 @@ export async function GET(req: Request) {
           });
         }
 
-        const { used, limit } = await getEffectiveFreeUsage(access.user, deviceId);
+        const { used, limit } = await capByIpPool(await getEffectiveFreeUsage(access.user, deviceId), ipKey);
         return NextResponse.json({
           status: "free",
           remaining: Math.max(0, limit - used),
@@ -64,7 +65,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Missing device ID" }, { status: 400 });
     }
 
-    const { used, limit } = await getDeviceUsage(deviceId);
+    const { used, limit } = await capByIpPool(await getDeviceUsage(deviceId), ipKey);
     return NextResponse.json({
       status: "anonymous",
       remaining: Math.max(0, limit - used),

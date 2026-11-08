@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { consumeDeviceDownload, consumeUserDownload, ConsumeResult } from "@/lib/freeQuota";
+import { consumeDeviceDownload, consumeUserDownload, ConsumeResult, ipKeyFrom } from "@/lib/freeQuota";
 import { checkLicenseKey, findUserWithAccess, licenseKeyFrom, resolveUserEmail } from "@/lib/downloadAccess";
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     const body = await req.json().catch(() => ({}));
     const deviceId: string | null = body.deviceId || null;
     const licenseKey = licenseKeyFrom(req, body.licenseKey);
+    const ipKey = ipKeyFrom(req);
 
     // A provided license key is authoritative: if it's invalid, say so rather
     // than silently falling back to the free quota.
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
           return NextResponse.json({ success: true, status: "active", remaining: 999999, used: access.user.downloadsUsed });
         }
 
-        const result = await consumeUserDownload(access.user, deviceId);
+        const result = await consumeUserDownload(access.user, deviceId, ipKey);
         return limitResponse(result, "free");
       }
     }
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing device ID" }, { status: 400 });
     }
 
-    const result = await consumeDeviceDownload(deviceId);
+    const result = await consumeDeviceDownload(deviceId, ipKey);
     return limitResponse(result, "anonymous");
   } catch (error) {
     console.error("Decrement API error:", error);
