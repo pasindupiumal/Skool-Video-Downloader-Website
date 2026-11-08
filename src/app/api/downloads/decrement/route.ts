@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { consumeDeviceDownload, consumeUserDownload, ConsumeResult, ipKeyFrom } from "@/lib/freeQuota";
+import { BLOCKED_MESSAGE, consumeDeviceDownload, consumeUserDownload, ConsumeResult, ipKeyFrom, isDeviceBlocked } from "@/lib/freeQuota";
 import { checkLicenseKey, findUserWithAccess, licenseKeyFrom, resolveUserEmail } from "@/lib/downloadAccess";
 
 export const dynamic = 'force-dynamic';
@@ -31,6 +31,10 @@ export async function POST(req: Request) {
           return NextResponse.json({ success: true, status: "active", remaining: 999999, used: access.user.downloadsUsed });
         }
 
+        if (await isDeviceBlocked(deviceId)) {
+          return NextResponse.json({ success: false, error: BLOCKED_MESSAGE, remaining: 0, used: 0 }, { status: 403 });
+        }
+
         const result = await consumeUserDownload(access.user, deviceId, ipKey);
         return limitResponse(result, "free");
       }
@@ -38,6 +42,10 @@ export async function POST(req: Request) {
 
     if (!deviceId) {
       return NextResponse.json({ error: "Missing device ID" }, { status: 400 });
+    }
+
+    if (await isDeviceBlocked(deviceId)) {
+      return NextResponse.json({ success: false, error: BLOCKED_MESSAGE, remaining: 0, used: 0 }, { status: 403 });
     }
 
     const result = await consumeDeviceDownload(deviceId, ipKey);

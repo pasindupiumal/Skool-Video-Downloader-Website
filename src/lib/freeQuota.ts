@@ -54,6 +54,10 @@ export function ipKeyFrom(req: Request): string | null {
   return "ip:" + createHash("sha256").update(salt + ip).digest("hex").slice(0, 32);
 }
 
+// Shown in the extension when an admin has blocked a device.
+export const BLOCKED_MESSAGE =
+  "Your device's free download limit has been reached. If you think this is a mistake, please contact us on Discord and we'll be happy to help!";
+
 export interface Usage {
   used: number;
   limit: number;
@@ -64,6 +68,42 @@ export async function getDeviceUsage(deviceId: string | null | undefined): Promi
   const anonymousDevices = await anonymousDevicesCollection();
   const device = await anonymousDevices.findOne({ _id: deviceId });
   return { used: device?.downloads || 0, limit: FREE_DOWNLOAD_LIMIT + (device?.bonusDownloads || 0) };
+}
+
+export async function isDeviceBlocked(deviceId: string | null | undefined): Promise<boolean> {
+  if (!deviceId) return false;
+  const anonymousDevices = await anonymousDevicesCollection();
+  const device = await anonymousDevices.findOne({ _id: deviceId }, { projection: { blocked: 1 } });
+  return !!device?.blocked;
+}
+
+// Remembers which (hashed) network a known device is on, for the admin view.
+// Only touches devices that already have a record, so status checks from
+// brand-new installs never create documents.
+export async function recordDeviceNetwork(deviceId: string | null | undefined, ipKey: string | null): Promise<void> {
+  if (!deviceId || !ipKey) return;
+  const anonymousDevices = await anonymousDevicesCollection();
+  await anonymousDevices.updateOne({ _id: deviceId, ipKey: { $ne: ipKey } }, { $set: { ipKey } });
+}
+
+export async function setDeviceBlocked(deviceId: string, blocked: boolean, reason: string): Promise<void> {
+  const anonymousDevices = await anonymousDevicesCollection();
+  const now = new Date();
+  if (blocked) {
+    await anonymousDevices.updateOne(
+      { _id: deviceId },
+      {
+        $set: { blocked: true, blockedAt: now, blockReason: reason, updatedAt: now },
+        $setOnInsert: { downloads: 0, createdAt: now },
+      },
+      { upsert: true }
+    );
+  } else {
+    await anonymousDevices.updateOne(
+      { _id: deviceId },
+      { $set: { blocked: false, updatedAt: now }, $unset: { blockReason: "", blockedAt: "" } }
+    );
+  }
 }
 
 // Lowers a usage report so it reflects what is left in the network's shared
@@ -133,7 +173,7 @@ export async function consumeDeviceDownload(deviceId: string, ipKey: string | nu
   // exists first, then do the conditional increment.
   await anonymousDevices.updateOne(
     { _id: deviceId },
-    { $setOnInsert: { downloads: 0, createdAt: now, updatedAt: now } },
+    { $setOnInsert: { downloads: 0, createdAt: now, updatedAt: now }, ...(ipKey ? { $set: { ipKey } } : {}) },
     { upsert: true }
   );
 
@@ -187,7 +227,7 @@ export async function consumeUserDownload(
         const now = new Date();
         await anonymousDevices.updateOne(
           { _id: deviceId },
-          { $max: { downloads: newUsed }, $set: { updatedAt: now }, $setOnInsert: { createdAt: now } },
+          { $max: { downloads: newUsed }, $set: { updatedAt: now, ...(ipKey ? { ipKey } : {}) }, $setOnInsert: { createdAt: now } },
           { upsert: true }
         );
       }

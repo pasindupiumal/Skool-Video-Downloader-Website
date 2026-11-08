@@ -10,6 +10,14 @@ interface Grant {
   grantedAt: string;
 }
 
+interface DeviceRow {
+  id: string;
+  code: string;
+  used: number;
+  limit: number;
+  blocked: boolean;
+}
+
 interface Match {
   kind: "account" | "device";
   id: string;
@@ -17,6 +25,9 @@ interface Match {
   used: number;
   limit: number;
   grants: Grant[];
+  blocked?: boolean;
+  blockReason?: string;
+  network?: { id: string; poolUsed: number; poolLimit: number; others: DeviceRow[] } | null;
 }
 
 const inputStyle = {
@@ -88,6 +99,26 @@ export default function FreeDownloadsGrant() {
     }
   };
 
+  // Block/unblock a device (trial abuse). A blocked device sees a friendly
+  // "limit reached, contact us on Discord" message; paid license keys still work.
+  const setBlocked = async (deviceId: string, label: string, block: boolean) => {
+    const msg = block
+      ? `Block ${label}? They'll see "Your device's free download limit has been reached... contact us on Discord".`
+      : `Unblock ${label}?`;
+    if (!confirm(msg)) return;
+    setLoading(true);
+    setMessage("");
+    try {
+      const data = await call({ action: block ? "block" : "unblock", target: { id: deviceId }, reason: "Trial abuse" });
+      setMatches(data.matches);
+      setMessage(`${label} ${block ? "blocked" : "unblocked"}.`);
+    } catch (err: any) {
+      setMessage(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="premium-card" style={{ marginTop: "32px" }}>
       <h3>Grant Free Downloads</h3>
@@ -145,6 +176,27 @@ export default function FreeDownloadsGrant() {
                   <td style={{ padding: "8px", fontFamily: m.kind === "device" ? "monospace" : undefined }}>
                     {m.label}
                     <div style={{ fontSize: "0.75rem", color: "#666" }}>{m.kind === "account" ? "Signed-in account" : "Not signed in"}</div>
+                    {m.blocked && <div style={{ fontSize: "0.75rem", color: "#c62828", fontWeight: 600 }}>BLOCKED</div>}
+                    {m.kind === "device" && (
+                      <div style={{ fontSize: "0.75rem", color: "#666", fontFamily: "sans-serif", marginTop: "4px" }}>
+                        {m.network
+                          ? `Network ${m.network.id} · pool ${m.network.poolUsed}/${m.network.poolLimit} · ${m.network.others.length} other device(s)`
+                          : "Network not recorded yet (updates next time they open the extension)"}
+                        {m.network?.others.map((o) => (
+                          <div key={o.id} style={{ fontFamily: "monospace" }}>
+                            {o.code} · {o.used}/{o.limit}
+                            {o.blocked ? " · BLOCKED" : ""}{" "}
+                            <button
+                              onClick={() => setBlocked(o.id, `Device ${o.code}`, !o.blocked)}
+                              disabled={loading}
+                              style={{ ...buttonStyle, padding: "1px 6px", fontSize: "0.7rem" }}
+                            >
+                              {o.blocked ? "Unblock" : "Block"}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </td>
                   <td style={{ padding: "8px" }}>
                     {m.used} / {m.limit}
@@ -162,6 +214,15 @@ export default function FreeDownloadsGrant() {
                     <button onClick={() => grant(m)} disabled={loading} style={buttonStyle}>
                       Give +{amount}
                     </button>
+                    {m.kind === "device" && (
+                      <button
+                        onClick={() => setBlocked(m.id, m.label, !m.blocked)}
+                        disabled={loading}
+                        style={{ ...buttonStyle, marginLeft: "6px", color: m.blocked ? "#000" : "#c62828" }}
+                      >
+                        {m.blocked ? "Unblock" : "Block"}
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

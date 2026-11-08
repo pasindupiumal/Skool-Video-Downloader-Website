@@ -11,6 +11,7 @@ import AddLicenseForm from "./add-license-form";
 import ResetPasswordButton from "./reset-password-button";
 import MessageToggle from "./message-toggle";
 import FreeDownloadsGrant from "./free-downloads-grant";
+import NetworksPanel from "./networks-panel";
 const BORDER = "1px solid #ebecedcc";
 
 export default async function AdminDashboard() {
@@ -167,6 +168,7 @@ export default async function AdminDashboard() {
       </div>
 
       <FreeDownloadsGrant />
+      <NetworksPanel />
 
       <div className="premium-card" style={{ marginTop: "32px" }}>
         <h3>Free Users ({freeUsers.length})</h3>

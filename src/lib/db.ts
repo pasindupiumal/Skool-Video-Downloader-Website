@@ -74,6 +74,13 @@ export interface AnonymousDeviceDoc {
   // Extra free downloads on top of FREE_DOWNLOAD_LIMIT, granted from /admin.
   bonusDownloads?: number;
   bonusGrants?: BonusGrant[];
+  // Hashed network (IP) this device last used the extension from. Lets /admin
+  // group devices that share a network. Never the raw IP.
+  ipKey?: string;
+  // Set from /admin to stop a device from using the free quota (trial abuse).
+  blocked?: boolean;
+  blockedAt?: Date;
+  blockReason?: string;
   createdAt: Date;
   updatedAt: Date;
 }
