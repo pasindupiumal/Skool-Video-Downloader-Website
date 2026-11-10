@@ -96,6 +96,9 @@ async function handleCheckoutCompleted(
         currentPeriodEnd: plan === "monthly" ? computeNextPeriodEnd(now) : null,
         updatedAt: now,
       },
+      // This purchase now owns the record. Drop any Dodo id so a late Dodo
+      // cancellation/refund for an older purchase can't cancel this one.
+      $unset: { dodoId: "", cancelledAt: "" },
       ...(paymentIntentId ? { $addToSet: { paymentIds: paymentIntentId } } : {}),
       $setOnInsert: { userId, createdAt: now },
     },
@@ -131,10 +134,38 @@ async function revoke(id: string | undefined, reason: string, licenseKeys: Licen
   const sub = await subscriptions.findOne({ $or: [{ stripeId: id }, { paymentIds: id }] });
   const ids = Array.from(new Set([id, sub?.stripeId].filter(Boolean))) as string[];
   const keys = await licenseKeys.updateMany({ stripeId: { $in: ids } }, { $set: { status: "disabled", updatedAt: now } });
-  const subs = sub
+  // Only cancel the record if Stripe currently owns it; if a Dodo purchase took
+  // it over, this revocation concerns an older Stripe purchase (keys only).
+  const subs = sub && sub.stripeId
     ? await subscriptions.updateOne({ _id: sub._id }, { $set: { status: "cancelled", updatedAt: now } })
     : { modifiedCount: 0 };
   console.log(`${reason} for ${id}: disabled ${keys.modifiedCount} key(s), cancelled ${subs.modifiedCount} subscription(s).`);
+}
+
+// A cancelled monthly subscription keeps access until the end of the period the
+// customer paid for. At a normal period-end cancellation that moment is already
+// now, so this revokes right away; only a mid-period (immediate) cancellation
+// gets the remaining time. Stripe's own current_period_end is used, so calendar
+// months of any length are exact.
+async function endOrRevoke(sub: Stripe.Subscription, reason: string, licenseKeys: LicenseKeys, subscriptions: Subscriptions) {
+  const rec = await subscriptions.findOne({ stripeId: sub.id });
+  if (rec && rec.plan === "monthly" && rec.status === "active") {
+    // Stripe sends both updated(canceled) and deleted for one cancellation; the
+    // first already pulled the expiry back, so the second must not revoke.
+    if (rec.cancelledAt) return;
+    const endSec = (sub as any).current_period_end ?? sub.items?.data?.[0]?.current_period_end;
+    const paidThrough = typeof endSec === "number" ? new Date(endSec * 1000) : null;
+    if (paidThrough && paidThrough.getTime() > Date.now()) {
+      const now = new Date();
+      await subscriptions.updateOne(
+        { _id: rec._id },
+        { $set: { currentPeriodEnd: paidThrough, cancelledAt: now, updatedAt: now } }
+      );
+      console.log(`${reason} for ${sub.id}: access kept until ${paidThrough.toISOString()}.`);
+      return;
+    }
+  }
+  await revoke(sub.id, reason, licenseKeys, subscriptions);
 }
 
 // Refunds/disputes on a monthly charge carry a payment_intent we never stored
@@ -200,14 +231,16 @@ export async function POST(req: Request) {
         if (sub.status === "past_due" || sub.status === "unpaid" || sub.status === "paused") {
           // Grace period: record the status, leave the license key alone.
           await subscriptions.updateOne({ stripeId: sub.id }, { $set: { status: "on_hold", updatedAt: new Date() } });
-        } else if (sub.status === "canceled" || sub.status === "incomplete_expired") {
+        } else if (sub.status === "canceled") {
+          await endOrRevoke(sub, "Subscription canceled", licenseKeys, subscriptions);
+        } else if (sub.status === "incomplete_expired") {
           await revoke(sub.id, `Subscription ${sub.status}`, licenseKeys, subscriptions);
         }
         break;
       }
 
       case "customer.subscription.deleted":
-        await revoke((event.data.object as Stripe.Subscription).id, "Subscription deleted", licenseKeys, subscriptions);
+        await endOrRevoke(event.data.object as Stripe.Subscription, "Subscription deleted", licenseKeys, subscriptions);
         break;
 
       case "charge.refunded":

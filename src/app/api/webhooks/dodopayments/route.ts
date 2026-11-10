@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { usersCollection, subscriptionsCollection, licenseKeysCollection } from "@/lib/db";
-import { computeNextPeriodEnd } from "@/lib/subscription";
+import { computeNextPeriodEnd, paidThroughFromStoredEnd } from "@/lib/subscription";
 import crypto from "crypto";
 
 // Event names below are Dodo's real, confirmed catalog (from the "Add
@@ -115,6 +115,9 @@ async function activatePremium(data: any, users: Users, subscriptions: Subscript
         currentPeriodEnd: planName === "monthly" ? computeNextPeriodEnd(now) : null,
         updatedAt: now,
       },
+      // This purchase now owns the record. Drop any Stripe ids so a late Stripe
+      // cancellation/refund for an older purchase can't cancel this one.
+      $unset: { stripeId: "", stripeCustomerId: "", cancelledAt: "" },
       ...(paymentId ? { $addToSet: { paymentIds: paymentId } } : {}),
       $setOnInsert: { userId: user._id!.toString(), createdAt: now },
     },
@@ -206,13 +209,44 @@ async function revokeByDodoId(
   const ids = Array.from(new Set([id, sub?.dodoId].filter(Boolean))) as string[];
 
   const revokedKeys = await licenseKeys.updateMany({ dodoId: { $in: ids } }, { $set: { status: "disabled", updatedAt: now } });
-  const revokedSub = sub
+  // Only cancel the record if Dodo currently owns it; if a Stripe purchase took
+  // it over, this revocation concerns an older Dodo purchase (keys only).
+  const revokedSub = sub && sub.dodoId
     ? await subscriptions.updateOne({ _id: sub._id }, { $set: { status: "cancelled", updatedAt: now } })
     : { modifiedCount: 0 };
   console.log(
     `${reason} for ${id}: disabled ${revokedKeys.modifiedCount} license key(s), ` +
     `cancelled ${revokedSub.modifiedCount} subscription(s). Verify manually in /admin if this looks wrong.`
   );
+}
+
+// Dodo cancels immediately when a customer cancels, even though they've paid
+// for the whole month. Keep their key and access on until that paid month ends:
+// the stored currentPeriodEnd is pulled back to the paid-through date, and the
+// existing expiry checks (isSubscriptionCurrentlyActive / checkLicenseKey) end
+// access then. Falls back to an immediate revoke when there's no paid time left.
+async function cancelAtPeriodEnd(
+  id: string | undefined,
+  licenseKeys: LicenseKeys,
+  subscriptions: Subscriptions
+) {
+  if (!id) return;
+  const sub = await subscriptions.findOne({ dodoId: id });
+  if (sub && sub.plan === "monthly" && sub.status === "active") {
+    // A retried delivery: already pulled back, don't subtract the grace twice.
+    if (sub.cancelledAt) return;
+    const paidThrough = paidThroughFromStoredEnd(sub.currentPeriodEnd);
+    if (paidThrough && paidThrough.getTime() > Date.now()) {
+      const now = new Date();
+      await subscriptions.updateOne(
+        { _id: sub._id },
+        { $set: { currentPeriodEnd: paidThrough, cancelledAt: now, updatedAt: now } }
+      );
+      console.log(`Subscription cancelled for ${id}: access kept until ${paidThrough.toISOString()}.`);
+      return;
+    }
+  }
+  await revokeByDodoId(id, "Subscription cancelled", licenseKeys, subscriptions);
 }
 
 // Standard Webhooks verification (what Dodo uses): HMAC-SHA256 over
@@ -309,7 +343,17 @@ export async function POST(req: Request) {
       // check) would keep granting unlimited downloads to a customer who
       // stopped paying. Dodo's license keys have no expiration event of
       // their own to catch this automatically.
+      // A customer cancelling mid-month keeps access until the end of the month
+      // they paid for (see cancelAtPeriodEnd); expiry and failed payments are
+      // the genuine end of access and revoke immediately.
       case "subscription.cancelled":
+        await cancelAtPeriodEnd(
+          event.data.subscription_id || event.data.id,
+          licenseKeys,
+          subscriptions
+        );
+        break;
+
       case "subscription.expired":
       case "subscription.failed":
         await revokeByDodoId(

@@ -11,6 +11,15 @@ const MONTHLY_PERIOD_DAYS = 30;
 const GRACE_DAYS = 5;
 export const MONTHLY_PERIOD_MS = (MONTHLY_PERIOD_DAYS + GRACE_DAYS) * 24 * 60 * 60 * 1000;
 
+// The date a monthly customer has actually paid through: the stored expiry
+// minus the grace buffer (see computeNextPeriodEnd). Used when a customer
+// cancels mid-period, so access runs to the end of the month they paid for
+// instead of being cut off the moment they cancel.
+export function paidThroughFromStoredEnd(stored: Date | null | undefined): Date | null {
+  if (!stored) return null;
+  return new Date(new Date(stored).getTime() - GRACE_DAYS * 24 * 60 * 60 * 1000);
+}
+
 export function computeNextPeriodEnd(from: Date = new Date()): Date {
   return new Date(from.getTime() + MONTHLY_PERIOD_MS);
 }
