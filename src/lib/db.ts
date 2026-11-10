@@ -41,6 +41,9 @@ export interface SubscriptionDoc {
   // run out. A safety net independent of whether Dodo's own cancellation/
   // dunning webhook ever arrives: see src/lib/subscription.ts.
   currentPeriodEnd?: Date | null;
+  // Set when a monthly customer cancelled mid-period. Access stays on until
+  // currentPeriodEnd (the end of what they paid for), then lapses on its own.
+  cancelledAt?: Date | null;
   // Every Dodo payment id seen for this subscription (first charge and
   // renewals), so a refund/dispute — which only carries a payment_id — can
   // still be traced back to the subscription it belongs to.
