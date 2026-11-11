@@ -14,7 +14,23 @@ export interface LifetimePricing {
   nextPrice: number;
 }
 
+// Tiered pricing is PAUSED: the price is held at $49 with 8/10 slots shown,
+// regardless of sales. To turn the "+$10 every 10 sales" tiers back on, set
+// TIERED_PRICING_ENABLED to true.
+const TIERED_PRICING_ENABLED = false;
+const FROZEN_PRICE = 49;
+const FROZEN_SLOTS_TAKEN = 8;
+
 export function getLifetimePricing(activeLifetimeSales: number): LifetimePricing {
+  if (!TIERED_PRICING_ENABLED) {
+    return {
+      activeLifetimeSales,
+      price: FROZEN_PRICE,
+      slotsTaken: FROZEN_SLOTS_TAKEN,
+      nextPrice: FROZEN_PRICE + PRICE_STEP,
+    };
+  }
+
   const totalSales = activeLifetimeSales + STARTING_SALES_OFFSET;
   const tierIndex = Math.floor(totalSales / SLOTS_PER_TIER);
   const price = STARTING_PRICE + tierIndex * PRICE_STEP;
