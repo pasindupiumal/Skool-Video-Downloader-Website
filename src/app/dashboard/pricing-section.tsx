@@ -54,7 +54,7 @@ export default function PricingSection({
       </div>
 
       <div className={styles.pricingGrid}>
-        {/* Monthly Plan */}
+        {/* Monthly Plan — TEMPORARILY HIDDEN (monthly paused). Remove this comment wrapper to restore.
         <div className={styles.priceCard}>
           <div className={styles.planTitle}>Standard Monthly</div>
           <div className={styles.planPrice}>
@@ -83,6 +83,7 @@ export default function PricingSection({
             {loadingPlan === "monthly" ? "Redirecting..." : "Upgrade to Monthly"}
           </button>
         </div>
+        END Monthly Plan */}
 
         {/* Lifetime Plan */}
         <div className={`${styles.priceCard} ${styles.premiumPriceCard}`}>

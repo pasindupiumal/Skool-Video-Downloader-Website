@@ -64,7 +64,7 @@ export default async function Home() {
         </div>
         
         <div class="pricing-v2-container">
-            <!-- Plan 1: Standard -->
+            <!-- Plan 1: Standard (TEMPORARILY HIDDEN — monthly paused; delete this comment wrapper to restore)
             <div class="pricing-v2-card">
                 <div class="p-title-v2">Standard Monthly</div>
                 <div class="p-price-v2"><span>\$</span>20<span>/mo</span></div>
@@ -77,6 +77,7 @@ export default async function Home() {
                 </ul>
                 <a href="${session ? '/dashboard' : '/login?plan=monthly'}" class="p-btn-v2 btn-light-v2">Get Started</a>
             </div>
+            END monthly card -->
 
             <!-- Plan 2: Lifetime (Premium Dark) -->
             <div class="pricing-v2-card premium-dark">
