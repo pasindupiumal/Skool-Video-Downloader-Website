@@ -26,7 +26,7 @@ quickFacts:
   - label: "Common yt-dlp Error"
     value: "HTTP 403, fixed with cookies and a referer header"
   - label: "Extension Plans"
-    value: "5 free, then $20/month or Lifetime Pro"
+    value: "5 free, then $25/month or Lifetime Pro"
 ---
 
 **Disclosure:** we make **Video Saver for Skool**, a browser extension, so we have an interest in the comparison. This guide still gives you the full `yt-dlp` workflow, including the 403 fix, because for some people the free command-line route is the right one.
@@ -39,7 +39,7 @@ Use **`yt-dlp`** if you are comfortable in a terminal, want a free tool with no 
 
 | | `yt-dlp` + `ffmpeg` | Video Saver for Skool |
 | :--- | :--- | :--- |
-| **Price** | Free, open source | 5 free downloads, then $20/month or Lifetime Pro |
+| **Price** | Free, open source | 5 free downloads, then $25/month or Lifetime Pro |
 | **Setup** | Install `yt-dlp` and `ffmpeg` from a terminal | Install from the Chrome Web Store |
 | **Finding the video** | You find the stream or embed URL in DevTools for each lesson | The extension detects the player on the page |
 | **Login** | You pass your browser cookies to the tool | Uses your logged-in browser tab |

@@ -15,7 +15,7 @@ keywords:
   - "skool video downloader comparison"
   - "downloader for skool alternative"
   - "skool video download tools"
-tldr: "There are four realistic ways to download Skool videos in 2026: Video Saver for Skool (5 free downloads, all 5 players including YouTube, $20/mo or Lifetime Pro), Downloader for Skool by serp.co (3 free downloads, from $37/mo), Skool Video Download Tools by A5 (3 free downloads, paid price unlisted on store), and the open-source CLI tool yt-dlp (free, requires terminal setup and cookies)."
+tldr: "There are four realistic ways to download Skool videos in 2026: Video Saver for Skool (5 free downloads, all 5 players including YouTube, $25/mo or Lifetime Pro), Downloader for Skool by serp.co (3 free downloads, from $37/mo), Skool Video Download Tools by A5 (3 free downloads, paid price unlisted on store), and the open-source CLI tool yt-dlp (free, requires terminal setup and cookies)."
 description: "Compare 4 Skool video downloaders in 2026: Video Saver for Skool, Downloader for Skool (serp.co), Skool Video Download Tools (A5) and yt-dlp."
 video_url: "/assets/videos/demo.mp4"
 quickFacts:
@@ -35,7 +35,7 @@ quickFacts:
 
 If you want to save Skool classroom lessons or community videos that you already have access to, there are four realistic options in 2026:
 
-1. **Video Saver for Skool (this site):** Chrome extension supporting all 5 Skool players (**Native Mux, YouTube, Loom, Vimeo, and Wistia**), with **5 free downloads**, a **$20/month** plan, and a **one-time Lifetime Pro** option.
+1. **Video Saver for Skool (this site):** Chrome extension supporting all 5 Skool players (**Native Mux, YouTube, Loom, Vimeo, and Wistia**), with **5 free downloads**, a **$25/month** plan, and a **one-time Lifetime Pro** option.
 2. **Downloader for Skool (by serp.co):** Chrome extension listing Native Mux, Loom, Vimeo, and Wistia on its store page, with **3 free downloads** and paid plans starting at **$37/month**.
 3. **Skool Video Download Tools (by A5):** Chrome extension listing Native Skool, Loom, Vimeo, and Wistia, with **up to 3 free downloads** and a paid upgrade whose price is not published on the store listing.
 4. **`yt-dlp` (Open-Source CLI):** Free command-line downloader for technical users comfortable extracting `.m3u8` stream URLs and passing browser cookies in a terminal.
@@ -48,7 +48,7 @@ If you want to save Skool classroom lessons or community videos that you already
 | **Supported Skool Players** | **Native (Mux), YouTube, Loom, Vimeo, Wistia** | Native (Mux), Loom, Vimeo, Wistia *(on CWS listing)* | Native, Loom, Vimeo, Wistia | Any stream if supplied URL + cookies |
 | **Password-Protected Looms** | **Yes** (once unlocked in lesson) | Not stated on its listing | Not specified on listing | Manual headers required |
 | **Free Trial / Allowance** | **5 free downloads** | 3 free downloads (email sign-in) | Up to 3 free downloads | **100% Free & Unlimited** |
-| **Monthly Price** | **$20 / month** | From $37 / month | Not stated on store listing | $0 |
+| **Monthly Price** | **$25 / month** | From $37 / month | Not stated on store listing | $0 |
 | **One-Time Lifetime Option** | **Yes** ([see current tier](/#pricing)) | Not listed on CWS page | Not stated on store listing | N/A ($0) |
 | **Processing Location** | Local in your browser | Local HLS-to-MP4 in Chrome (per its listing) | Not stated on listing | Local Terminal |
 | **Refund Policy** | **14-day refund policy** | Not stated on CWS listing | Not stated on CWS listing | N/A ($0) |
@@ -60,7 +60,7 @@ If you want to save Skool classroom lessons or community videos that you already
 We built **Video Saver for Skool** for students who want a single one-click button on every Skool video and would rather not pay a $37+ monthly subscription.
 - **Supported Players:** Automatically detects Skool's native player (Mux/HLS `.m3u8`), **YouTube**, **Loom** (including password-protected Loom videos you can view), **Vimeo**, and **Wistia**.
 - **Free Plan:** 5 full-length MP4 downloads with no credit card required.
-- **Paid Pricing:** $20/month (cancel anytime) or a one-time **Lifetime Pro** license ([current early-bird price on homepage](/#pricing)), backed by a 14-day refund policy.
+- **Paid Pricing:** $25/month (cancel anytime) or a one-time **Lifetime Pro** license ([current early-bird price on homepage](/#pricing)), backed by a 14-day refund policy.
 - **Where it falls short:** Works only in Chromium browsers (Google Chrome, Brave, Microsoft Edge, Opera) on desktop - not mobile Safari or iOS.
 
 ### 2. Downloader for Skool by serp.co (monthly subscription)
@@ -86,7 +86,7 @@ According to its [Chrome Web Store listing](https://chromewebstore.google.com/de
 ## Which Skool Video Downloader Should You Choose?
 
 - **You only need 1 to 5 videos total:** Install **Video Saver for Skool** and use the [5 free downloads](/blog/download-skool-videos-free). You won't pay a cent.
-- **You are archiving a full course before canceling a Skool membership:** Choose **Video Saver for Skool Standard Monthly ($20/mo)** or **Lifetime Pro** - it supports all 5 players (including YouTube and Loom), saves $17/month compared to $37/month alternatives, and includes a 14-day refund policy.
+- **You are archiving a full course before canceling a Skool membership:** Choose **Video Saver for Skool Standard Monthly ($25/mo)** or **Lifetime Pro** - it supports all 5 players (including YouTube and Loom), saves $12/month compared to $37/month alternatives, and includes a 14-day refund policy.
 - **You are a developer who wants a 100% free unlimited workflow:** Use **`yt-dlp`** with `ffmpeg` and `--cookies-from-browser chrome`.
 
 Whichever tool you pick, only download lessons you have legitimate access to and keep your files strictly for personal offline study. Read our [guide on whether it is legal to download Skool videos](/blog/is-it-legal-to-download-skool-videos).
@@ -94,7 +94,7 @@ Whichever tool you pick, only download lessons you have legitimate access to and
 ## Frequently Asked Questions
 
 ### What is the best Skool video downloader in 2026?
-As the makers of Video Saver for Skool we are biased, but for most students it offers the strongest balance of player compatibility (Skool native Mux, YouTube, Loom, Vimeo, and Wistia), free trial size (5 free downloads vs 3 on the other two extensions' listings), and pricing ($20/month or a one-time Lifetime Pro license). If you prefer command-line tools and want a free open-source solution, `yt-dlp` is the best technical alternative.
+As the makers of Video Saver for Skool we are biased, but for most students it offers the strongest balance of player compatibility (Skool native Mux, YouTube, Loom, Vimeo, and Wistia), free trial size (5 free downloads vs 3 on the other two extensions' listings), and pricing ($25/month or a one-time Lifetime Pro license). If you prefer command-line tools and want a free open-source solution, `yt-dlp` is the best technical alternative.
 
 ### Why didn't you rank these extensions by Chrome Web Store star ratings?
 The ratings rest on very few reviews: when we checked on 7 November 2026, Downloader for Skool showed 3.6 stars from 31 ratings and Skool Video Download Tools showed 3.5 stars from 12. That is too little to rank on, so test each extension on your own Skool lesson with its free downloads before paying.

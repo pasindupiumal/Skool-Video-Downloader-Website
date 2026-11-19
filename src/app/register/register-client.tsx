@@ -7,10 +7,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { resumeCheckout } from "@/lib/resume-checkout";
 
 export default function RegisterClient() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,10 +27,8 @@ export default function RegisterClient() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName,
-          lastName,
+          name,
           email,
-          mobile: mobile || undefined,
           password,
           confirmPassword,
         }),
@@ -88,29 +84,16 @@ export default function RegisterClient() {
             {error && <p style={{ color: '#ef4444', fontSize: '0.875rem', marginBottom: '1rem', textAlign: 'center' }}>{error}</p>}
 
             <form className="auth-form" onSubmit={handleSignUp}>
-              <div style={{ display: 'flex', gap: '0.75rem' }}>
-                <div className="form-group" style={{ flex: 1, minWidth: 0 }}>
-                  <label htmlFor="firstName">First name</label>
-                  <input
-                    id="firstName"
-                    type="text"
-                    required
-                    style={{ width: '100%' }}
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
-                <div className="form-group" style={{ flex: 1, minWidth: 0 }}>
-                  <label htmlFor="lastName">Last name</label>
-                  <input
-                    id="lastName"
-                    type="text"
-                    required
-                    style={{ width: '100%' }}
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </div>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
 
               <div className="form-group" style={{ marginTop: '1rem' }}>
@@ -123,17 +106,6 @@ export default function RegisterClient() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label htmlFor="mobile">Mobile number (optional)</label>
-                <input
-                  id="mobile"
-                  type="tel"
-                  placeholder="+1 555 123 4567"
-                  value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
                 />
               </div>
 

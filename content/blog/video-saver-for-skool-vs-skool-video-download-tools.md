@@ -21,7 +21,7 @@ quickFacts:
   - label: "Free Downloads"
     value: "5 (ours) vs up to 3 (A5)"
   - label: "Published Price"
-    value: "$20/month (ours) vs not stated"
+    value: "$25/month (ours) vs not stated"
   - label: "Lifetime Plan"
     value: "Yes (ours) vs not listed"
   - label: "YouTube Embeds"
@@ -32,7 +32,7 @@ quickFacts:
 
 ## Quick Answer: Video Saver for Skool vs Skool Video Download Tools
 
-Both are Chrome extensions that save Skool lessons as MP4 files. Their listings name the same core players: Skool's native player, Loom, Vimeo and Wistia. The visible differences: **Video Saver for Skool** gives **5 free downloads** against A5's **up to 3**, supports **YouTube** embeds (A5's listing does not name YouTube), publishes its price ($20/month or a one-time Lifetime Pro plan) and has a 14-day refund policy. A5's listing states a paid upgrade for unlimited downloads but gives no price.
+Both are Chrome extensions that save Skool lessons as MP4 files. Their listings name the same core players: Skool's native player, Loom, Vimeo and Wistia. The visible differences: **Video Saver for Skool** gives **5 free downloads** against A5's **up to 3**, supports **YouTube** embeds (A5's listing does not name YouTube), publishes its price ($25/month or a one-time Lifetime Pro plan) and has a 14-day refund policy. A5's listing states a paid upgrade for unlimited downloads but gives no price.
 
 ## Side-by-Side Comparison
 
@@ -43,7 +43,7 @@ Both are Chrome extensions that save Skool lessons as MP4 files. Their listings 
 | **Loom, Vimeo, Wistia** | Yes | Yes (listed) |
 | **YouTube embeds** | Yes | Not named on its listing |
 | **Free downloads** | 5 in total, per device | Up to 3 |
-| **Paid plan** | $20/month, or one-time Lifetime Pro ([current tier](/#pricing)) | "Paid upgrade: unlimited downloads", price not stated on its listing |
+| **Paid plan** | $25/month, or one-time Lifetime Pro ([current tier](/#pricing)) | "Paid upgrade: unlimited downloads", price not stated on its listing |
 | **Refund policy** | 14 days | Not mentioned on its listing |
 | **Where conversion happens** | In your browser | Not stated on its listing |
 | **Support** | Email and a Discord community | Support hub, email and phone (per its listing) |
@@ -53,7 +53,7 @@ Both are Chrome extensions that save Skool lessons as MP4 files. Their listings 
 ## What Matters When You Choose
 
 ### 1. Knowing the price before you commit
-With a trial of 3 or 5 downloads, you will eventually hit a paywall. **Video Saver for Skool** publishes its plans on the [pricing section](/#pricing) and in `/pricing.md`: 5 free downloads, $20/month, or a one-time Lifetime Pro plan. A5's listing says unlimited downloads need a paid upgrade but does not give the price, so you may need to install it to find out.
+With a trial of 3 or 5 downloads, you will eventually hit a paywall. **Video Saver for Skool** publishes its plans on the [pricing section](/#pricing) and in `/pricing.md`: 5 free downloads, $25/month, or a one-time Lifetime Pro plan. A5's listing says unlimited downloads need a paid upgrade but does not give the price, so you may need to install it to find out.
 
 ### 2. Players
 Both list Skool's native player, Loom, Vimeo and Wistia. Many Skool creators also embed unlisted YouTube videos for call replays, and Video Saver for Skool supports those. A5's listing does not name YouTube; that does not prove it cannot handle them, only that it does not promise it. See our [Loom guide](/blog/download-loom-videos-from-skool) if your lessons use password-protected Looms.

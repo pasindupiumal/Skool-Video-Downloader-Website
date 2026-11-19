@@ -64,7 +64,7 @@ const QUICK_ANSWERS: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'Is there a free way to do it?',
-    a: <>Video Saver for Skool includes 5 free downloads, then costs $20/month or a one-time Lifetime Pro plan. The open-source yt-dlp is free if you are comfortable in a terminal. See the <Link href="/blog/download-skool-videos-free">free-plan guide</Link>.</>,
+    a: <>Video Saver for Skool includes 5 free downloads, then costs $25/month or a one-time Lifetime Pro plan. The open-source yt-dlp is free if you are comfortable in a terminal. See the <Link href="/blog/download-skool-videos-free">free-plan guide</Link>.</>,
   },
   {
     q: 'Is it legal?',
@@ -343,7 +343,7 @@ export default async function BlogList() {
 
             <section className="hub-cta" aria-label="Install the extension">
               <h2>Save your Skool lessons as MP4</h2>
-              <p>Test it on your own lessons with 5 free downloads. No credit card required. After that, $20/month or a one-time Lifetime Pro plan.</p>
+              <p>Test it on your own lessons with 5 free downloads. No credit card required. After that, $25/month or a one-time Lifetime Pro plan.</p>
               <a className="hub-btn" href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">Add to Chrome - 5 free downloads</a>
               <a className="hub-btn hub-btn-alt" href="/#pricing">See pricing</a>
             </section>

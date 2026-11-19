@@ -521,7 +521,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
                   <div>
                     <h3>Ready to save your Skool videos as MP4?</h3>
                     <p>Install {SITE_NAME} and try it on your own lessons with 5 free downloads. No credit card required.</p>
-                    <small>Then $20/month or Lifetime Pro (current price on the homepage) · 14-day refund policy</small>
+                    <small>Then $25/month or Lifetime Pro (current price on the homepage) · 14-day refund policy</small>
                   </div>
                   <a className="pg-btn" href={installHref} target="_blank" rel="noopener noreferrer">Add to Chrome - 5 free downloads</a>
                 </section>

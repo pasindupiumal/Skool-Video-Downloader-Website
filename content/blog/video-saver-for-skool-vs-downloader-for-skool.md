@@ -14,14 +14,14 @@ keywords:
   - "downloader for skool serp"
   - "skool video downloader comparison"
   - "skool video saver vs skool downloader"
-tldr: "Both are Chrome extensions that convert Skool videos in your browser. Video Saver for Skool has 5 free downloads, $20/month, a lifetime plan and YouTube support; Downloader for Skool lists 3 free downloads and plans from $37/month."
-description: "Video Saver for Skool vs Downloader for Skool: players, free downloads (5 vs 3) and price ($20/mo vs from $37/mo), from their public listings."
+tldr: "Both are Chrome extensions that convert Skool videos in your browser. Video Saver for Skool has 5 free downloads, $25/month, a lifetime plan and YouTube support; Downloader for Skool lists 3 free downloads and plans from $37/month."
+description: "Video Saver for Skool vs Downloader for Skool: players, free downloads (5 vs 3) and price ($25/mo vs from $37/mo), from their public listings."
 video_url: "/assets/videos/demo.mp4"
 quickFacts:
   - label: "Free Downloads"
     value: "5 (ours) vs 3 (Downloader for Skool)"
   - label: "Monthly Price"
-    value: "$20 (ours) vs from $37"
+    value: "$25 (ours) vs from $37"
   - label: "Lifetime Plan"
     value: "Yes (ours) vs not listed"
   - label: "YouTube Embeds"
@@ -32,7 +32,7 @@ quickFacts:
 
 ## Quick Answer: Video Saver for Skool vs Downloader for Skool
 
-Both are Chrome extensions that add a download button to Skool lessons and convert videos to MP4 in your browser. On paper the differences are small: **Video Saver for Skool** gives **5 free downloads** to Downloader for Skool's **3**, costs **$20/month** against plans **from $37/month**, offers a one-time **Lifetime Pro** plan, and supports **YouTube** embeds, which Downloader for Skool's listing does not name. Downloader for Skool may suit you if you already use serp.co's tools.
+Both are Chrome extensions that add a download button to Skool lessons and convert videos to MP4 in your browser. On paper the differences are small: **Video Saver for Skool** gives **5 free downloads** to Downloader for Skool's **3**, costs **$25/month** against plans **from $37/month**, offers a one-time **Lifetime Pro** plan, and supports **YouTube** embeds, which Downloader for Skool's listing does not name. Downloader for Skool may suit you if you already use serp.co's tools.
 
 ## Side-by-Side Comparison
 
@@ -42,7 +42,7 @@ Both are Chrome extensions that add a download button to Skool lessons and conve
 | **Loom, Vimeo, Wistia** | Yes | Yes (listed) |
 | **YouTube embeds** | Yes | Not named on its listing |
 | **Free downloads** | 5 in total, per device | 3, after email sign-in |
-| **Monthly price** | $20/month | From $37/month |
+| **Monthly price** | $25/month | From $37/month |
 | **One-time lifetime plan** | Yes ([current tier](/#pricing)) | Not mentioned on its listing |
 | **Refund policy** | 14 days | Not mentioned on its listing |
 | **Where conversion happens** | In your browser | In your browser (per its listing) |
@@ -53,7 +53,7 @@ Both are Chrome extensions that add a download button to Skool lessons and conve
 
 | Time | Video Saver for Skool Monthly | Downloader for Skool (from $37/month) |
 | :--- | :--- | :--- |
-| 1 month | $20 | $37 |
+| 1 month | $25 | $37 |
 | 3 months | $60 | $111 |
 | 12 months | $240 | $444 |
 
@@ -92,7 +92,7 @@ No. Downloader for Skool is published by serp.co. Video Saver for Skool is a sep
 Video Saver for Skool does. Downloader for Skool's listing says its HLS-to-MP4 conversion happens entirely in your browser.
 
 ### Why do the prices differ?
-Each company sets its own. Ours are $20/month or a one-time Lifetime Pro plan. We cannot speak for how another company prices its product.
+Each company sets its own. Ours are $25/month or a one-time Lifetime Pro plan. We cannot speak for how another company prices its product.
 
 ### Does either have a refund policy?
 Video Saver for Skool offers 14 days. Downloader for Skool's listing does not mention one, so ask its publisher.

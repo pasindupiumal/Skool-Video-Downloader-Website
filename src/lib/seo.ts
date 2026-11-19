@@ -46,7 +46,7 @@ export function softwareSchema(lifetimePrice: number | string) {
     publisher: { "@id": `${SITE_URL}/#organization` },
     offers: [
       { "@type": "Offer", name: `Free (${FREE_DOWNLOADS} downloads)`, price: "0", priceCurrency: "USD" },
-      { "@type": "Offer", name: "Standard Monthly", price: "20", priceCurrency: "USD" },
+      { "@type": "Offer", name: "Standard Monthly", price: "25", priceCurrency: "USD" },
       { "@type": "Offer", name: "Lifetime Pro", price: String(lifetimePrice), priceCurrency: "USD" },
     ],
   };
