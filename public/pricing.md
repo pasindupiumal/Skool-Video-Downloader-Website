@@ -14,7 +14,7 @@ The Chrome extension for saving videos from Skool classroom lessons, community p
 - 5 free downloads in total per device (one-time allowance, does not reset).
 
 ### Standard Monthly
-- Price: $20 per month
+- Price: $25 per month
 - Unlimited downloads, all supported players, email support. Cancel anytime.
 
 ### Lifetime Pro

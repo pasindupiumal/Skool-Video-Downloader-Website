@@ -84,7 +84,7 @@ Technically yes, because the extension works from the video your browser is play
 Yes. Loom videos are saved as standard MP4 files with video and audio, at the best quality the Loom offers.
 
 ### Can I download Loom videos from Skool for free?
-Yes, within the free allowance: 5 downloads in total, no credit card required. After that it costs $20/month or a one-time Lifetime Pro plan. See the [free-plan guide](/blog/download-skool-videos-free).
+Yes, within the free allowance: 5 downloads in total, no credit card required. After that it costs $25/month or a one-time Lifetime Pro plan. See the [free-plan guide](/blog/download-skool-videos-free).
 
 ### Does it work on Loom videos in community posts and comments?
 It detects a Loom player on any Skool page you have opened, whether in the Classroom or the Community feed, once the player loads.

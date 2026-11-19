@@ -65,7 +65,7 @@ Open the **Classroom** tab and count what you want to keep. A handful of lessons
 | Plan | Price | Fits |
 | :--- | :--- | :--- |
 | **Free** | $0, 5 downloads in total (one-time, per device) | A few key lessons |
-| **Standard Monthly** | $20/month, unlimited, cancel anytime | Archiving one course in a month |
+| **Standard Monthly** | $25/month, unlimited, cancel anytime | Archiving one course in a month |
 | **Lifetime Pro** | One-time payment, tiered ([current price](/#pricing)) | Several communities over time |
 
 All purchases have a 14-day refund policy.

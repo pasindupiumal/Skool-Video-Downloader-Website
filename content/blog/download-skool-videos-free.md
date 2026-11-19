@@ -15,7 +15,7 @@ keywords:
   - "how to download skool videos for free"
   - "skool video downloader free trial"
   - "save skool videos free mp4"
-tldr: "Video Saver for Skool gives you 5 free downloads in total per device, no credit card, no watermarks. It is a one-time allowance that does not reset, after which it costs $20/month or a one-time Lifetime Pro plan."
+tldr: "Video Saver for Skool gives you 5 free downloads in total per device, no credit card, no watermarks. It is a one-time allowance that does not reset, after which it costs $25/month or a one-time Lifetime Pro plan."
 description: "Can you download Skool videos for free? See what the 5 free downloads include, their limits, and how free options compare. No credit card needed."
 video_url: "/assets/videos/demo.mp4"
 quickFacts:
@@ -26,14 +26,14 @@ quickFacts:
   - label: "Watermarks"
     value: "None"
   - label: "After the Free Plan"
-    value: "$20/month or Lifetime Pro"
+    value: "$25/month or Lifetime Pro"
 ---
 
 If you are looking for a free Skool video downloader, three questions matter: how many videos can you save, what is the catch, and what happens when the free allowance runs out? This guide answers all three using our own pricing and terms and the public listings of the other tools.
 
 ## Quick Answer: Can I download Skool videos for free?
 
-Yes, within a limit. **Video Saver for Skool** includes **5 free downloads in total**, per device, with no credit card required. The allowance is a one-time trial and does not reset. After that you need the **$20/month** plan or the one-time **Lifetime Pro** plan. If you want unlimited downloads for nothing and are comfortable with a terminal, the open-source tool `yt-dlp` can do it with more manual work.
+Yes, within a limit. **Video Saver for Skool** includes **5 free downloads in total**, per device, with no credit card required. The allowance is a one-time trial and does not reset. After that you need the **$25/month** plan or the one-time **Lifetime Pro** plan. If you want unlimited downloads for nothing and are comfortable with a terminal, the open-source tool `yt-dlp` can do it with more manual work.
 
 ## What the Free Plan Includes
 
@@ -54,7 +54,7 @@ Yes, within a limit. **Video Saver for Skool** includes **5 free downloads in to
 
 | Option | Free allowance | Skool players | The catch |
 | :--- | :--- | :--- | :--- |
-| **Video Saver for Skool** | 5 downloads, one-time, per device | Native, YouTube, Loom, Vimeo, Wistia | Paid after 5: $20/month or Lifetime Pro |
+| **Video Saver for Skool** | 5 downloads, one-time, per device | Native, YouTube, Loom, Vimeo, Wistia | Paid after 5: $25/month or Lifetime Pro |
 | **Downloader for Skool** (serp.co) | 3 free downloads after email sign-in | Native, Loom, Vimeo, Wistia (per its listing) | Plans from $37/month per its listing |
 | **Skool Video Download Tools** (A5) | Up to 3 free downloads | Native, Loom, Vimeo, Wistia (per its listing) | Paid upgrade, price not stated on its listing |
 | **`yt-dlp` + `ffmpeg`** | Unlimited | Any stream you can supply a URL and cookies for | Terminal and manual steps for each lesson |
@@ -84,7 +84,7 @@ Because the allowance does not reset, use it on purpose:
 | Plan | Price | Best for |
 | :--- | :--- | :--- |
 | **Free** | $0, 5 downloads in total | Testing the tool, or saving a handful of key lessons |
-| **Standard Monthly** | $20/month, unlimited downloads, cancel anytime | Archiving a whole course in one month |
+| **Standard Monthly** | $25/month, unlimited downloads, cancel anytime | Archiving a whole course in one month |
 | **Lifetime Pro** | One-time payment, early-bird tiered pricing ([current price](/#pricing)) | Staying in several Skool communities over time |
 
 Lifetime Pro includes all current Pro features for as long as the product exists, and a license covers one device. All purchases come with a 14-day refund policy. If you are archiving a course before your access ends, the [course backup checklist](/blog/save-skool-course-before-membership-expires) shows how to plan it.

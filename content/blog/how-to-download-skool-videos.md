@@ -83,7 +83,7 @@ A single course often mixes these: Loom walkthroughs in one module, YouTube repl
 
 | Method | Skool players | Effort | Cost |
 | :--- | :--- | :--- | :--- |
-| **Video Saver for Skool** (extension) | Native, YouTube, Loom, Vimeo, Wistia | One click per lesson | 5 free downloads, then $20/month or Lifetime Pro |
+| **Video Saver for Skool** (extension) | Native, YouTube, Loom, Vimeo, Wistia | One click per lesson | 5 free downloads, then $25/month or Lifetime Pro |
 | **`yt-dlp` + `ffmpeg`** | Any stream you can supply a URL and cookies for | Manual steps for each lesson | Free, open source |
 | **Online "paste a URL" sites** | Public Loom or YouTube links only | Low, but fails on private lessons | Free or ad-supported |
 | **Screen recording** (OBS, QuickTime) | Anything you can play | Real-time playback of each video | Free |
@@ -142,4 +142,4 @@ No. The extension uses your logged-in session and only saves videos you can play
 It depends on your country's copyright rules and your creator's terms. Video Saver for Skool is built for personal offline study of content you can already access, and sharing or reselling downloads is not allowed. This is general information, not legal advice. Read [is it legal to download Skool videos](/blog/is-it-legal-to-download-skool-videos).
 
 ### How does Video Saver for Skool compare with other Skool downloaders?
-Downloader for Skool lists 3 free downloads and plans from $37/month on its Chrome Web Store page, and Skool Video Download Tools lists up to 3 free downloads with no published price. Video Saver for Skool offers 5 free downloads, supports YouTube, costs $20/month and has a one-time [Lifetime Pro plan](/#pricing). See the full [alternatives comparison](/blog/skool-video-downloader-alternatives), [Video Saver for Skool vs Downloader for Skool](/blog/video-saver-for-skool-vs-downloader-for-skool) and [vs Skool Video Download Tools](/blog/video-saver-for-skool-vs-skool-video-download-tools).
+Downloader for Skool lists 3 free downloads and plans from $37/month on its Chrome Web Store page, and Skool Video Download Tools lists up to 3 free downloads with no published price. Video Saver for Skool offers 5 free downloads, supports YouTube, costs $25/month and has a one-time [Lifetime Pro plan](/#pricing). See the full [alternatives comparison](/blog/skool-video-downloader-alternatives), [Video Saver for Skool vs Downloader for Skool](/blog/video-saver-for-skool-vs-downloader-for-skool) and [vs Skool Video Download Tools](/blog/video-saver-for-skool-vs-skool-video-download-tools).

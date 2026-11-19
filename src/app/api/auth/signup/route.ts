@@ -10,10 +10,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { firstName, lastName, email, mobile, password, confirmPassword } =
-      await request.json();
+    const { name, email, password, confirmPassword } = await request.json();
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    if (!name || !String(name).trim() || !email || !password || !confirmPassword) {
       return NextResponse.json({ error: "Please fill in all required fields." }, { status: 400 });
     }
 
@@ -45,10 +44,7 @@ export async function POST(request: Request) {
       await users.insertOne({
         email: normalizedEmail,
         passwordHash,
-        firstName: String(firstName).trim(),
-        lastName: String(lastName).trim(),
-        name: `${String(firstName).trim()} ${String(lastName).trim()}`.trim(),
-        mobile: mobile ? String(mobile).trim() : null,
+        name: String(name).trim(),
         downloadsUsed: 0,
         createdAt: now,
         updatedAt: now,
