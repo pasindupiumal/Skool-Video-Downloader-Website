@@ -13,3 +13,5 @@ export const DISCORD_INVITE_URL = "https://discord.gg/NCnd8yJ5aR";
 export const SITE_URL = "https://www.skoolvideosaver.com";
 export const SITE_NAME = "Video Saver for Skool";
 export const FREE_DOWNLOADS = 5;
+export const MONTHLY_PRICE = 25;
+export const LIFETIME_PRICE = 49;

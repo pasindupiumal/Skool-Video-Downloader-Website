@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { MONTHLY_PRICE } from "@/lib/site";
 import styles from "./dashboard.module.css";
 
 interface PricingSectionProps {
@@ -58,7 +59,7 @@ export default function PricingSection({
         <div className={styles.priceCard}>
           <div className={styles.planTitle}>Standard Monthly</div>
           <div className={styles.planPrice}>
-            <span>$</span>25<span>/mo</span>
+            <span>$</span>{MONTHLY_PRICE}<span>/mo</span>
           </div>
           <p className={styles.planDesc}>Flexible monthly billing. Cancel anytime with a single click.</p>
           <ul className={styles.planFeatures}>

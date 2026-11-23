@@ -2,7 +2,9 @@
 // used by the landing page, dashboard, and checkout — keep these in sync or
 // the displayed price and the amount actually charged will drift apart.
 
-const STARTING_PRICE = 49;
+import { LIFETIME_PRICE } from "@/lib/site";
+
+const STARTING_PRICE = LIFETIME_PRICE;
 const STARTING_SALES_OFFSET = 7; // baseline sales counted before this counter existed
 const PRICE_STEP = 10;
 const SLOTS_PER_TIER = 10;
@@ -18,7 +20,7 @@ export interface LifetimePricing {
 // regardless of sales. To turn the "+$10 every 10 sales" tiers back on, set
 // TIERED_PRICING_ENABLED to true.
 const TIERED_PRICING_ENABLED = false;
-const FROZEN_PRICE = 49;
+const FROZEN_PRICE = LIFETIME_PRICE;
 const FROZEN_SLOTS_TAKEN = 8;
 
 export function getLifetimePricing(activeLifetimeSales: number): LifetimePricing {

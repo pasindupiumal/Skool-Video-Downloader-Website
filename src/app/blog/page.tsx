@@ -1,5 +1,5 @@
 import React from 'react';
-import { CHROME_STORE_URL, SITE_URL, SITE_NAME } from "@/lib/site";
+import { CHROME_STORE_URL, SITE_URL, SITE_NAME, MONTHLY_PRICE } from "@/lib/site";
 import { jsonLd, blogCollectionSchema, breadcrumbSchema } from "@/lib/seo";
 import fs from 'fs';
 import path from 'path';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: 'Skool Video Downloader Blog: Guides & Comparisons (2026)',
@@ -47,7 +48,7 @@ type Post = {
 const PATHS: { slug: string; goal: string; blurb: string; tag: string }[] = [
   { slug: 'how-to-download-skool-videos', goal: 'Save a lesson as an MP4', blurb: 'The full walkthrough: install, click Download, pick a quality. Covers every supported player and what to do when the button is missing.', tag: 'Start here' },
   { slug: 'download-skool-videos-free', goal: 'Try it before paying', blurb: 'What the 5 free downloads include, how they compare with other free options, and when upgrading makes sense.', tag: 'Free plan' },
-  { slug: 'download-loom-videos-from-skool', goal: 'Save a Loom video', blurb: 'How embedded Loom lessons work in Skool, including password-protected ones you can already watch.', tag: 'Loom' },
+  { slug: 'download-loom-videos-from-skool', goal: 'Save a Loom video', blurb: 'How embedded Loom lessons work in Skool, respecting creator settings, and saving videos you can play as MP4.', tag: 'Loom' },
   { slug: 'save-skool-course-before-membership-expires', goal: 'Archive a course before access ends', blurb: 'A checklist for backing up classroom lessons and call replays while your membership is still active.', tag: 'Checklist' },
   { slug: 'skool-video-downloader-alternatives', goal: 'Compare the tools', blurb: 'Two other extensions and the open-source yt-dlp, compared on players, free limits and price from their public listings.', tag: 'Comparison' },
   { slug: 'yt-dlp-vs-extension-for-skool-videos', goal: 'Use the terminal instead', blurb: 'The yt-dlp workflow for Skool, how to fix HTTP 403 errors, and when an extension saves you the manual steps.', tag: 'Technical' },
@@ -60,11 +61,11 @@ const QUICK_ANSWERS: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: 'Which video players are covered?',
-    a: <>Video Saver for Skool supports Skool&apos;s native player and YouTube, Loom, Vimeo and Wistia embeds. The <Link href="/blog/download-loom-videos-from-skool">Loom guide</Link> covers password-protected videos.</>,
+    a: <>Video Saver for Skool supports Skool&apos;s native player (Mux/HLS) and YouTube, Loom, Vimeo and Wistia embeds playing in your logged-in session. See the <Link href="/blog/download-loom-videos-from-skool">Loom guide</Link> for creator settings and troubleshooting.</>,
   },
   {
     q: 'Is there a free way to do it?',
-    a: <>Video Saver for Skool includes 5 free downloads, then costs $25/month or a one-time Lifetime Pro plan. The open-source yt-dlp is free if you are comfortable in a terminal. See the <Link href="/blog/download-skool-videos-free">free-plan guide</Link>.</>,
+    a: <>Video Saver for Skool includes 5 downloads in total, then costs ${MONTHLY_PRICE}/month or $49 one-time for Lifetime Pro. The open-source yt-dlp is free if you are comfortable in a terminal. See the <Link href="/blog/download-skool-videos-free">free-plan guide</Link>.</>,
   },
   {
     q: 'Is it legal?',
@@ -128,7 +129,7 @@ export default async function BlogList() {
     blogCollectionSchema(allOrdered as any, lastUpdated),
     breadcrumbSchema([
       { name: 'Home', path: '/' },
-      { name: 'Blog', path: '/blog' },
+      { name: 'Guides', path: '/blog' },
     ]),
   ];
 
@@ -213,7 +214,7 @@ export default async function BlogList() {
         <header className="index-header">
           <div className="header-container">
             <a className="header-logo" href="/">
-              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Video Saver for Skool logo" />
+              <img src="/assets/images/img_a38993e738.webp" height="30" width="30" alt="Video Saver for Skool logo" />
               <span>Video Saver for Skool</span>
             </a>
             <nav className="header-nav">
@@ -343,49 +344,14 @@ export default async function BlogList() {
 
             <section className="hub-cta" aria-label="Install the extension">
               <h2>Save your Skool lessons as MP4</h2>
-              <p>Test it on your own lessons with 5 free downloads. No credit card required. After that, $25/month or a one-time Lifetime Pro plan.</p>
+              <p>Test it on your own lessons with 5 free downloads. No credit card required. After that, ${MONTHLY_PRICE}/month or a one-time Lifetime Pro plan.</p>
               <a className="hub-btn" href={CHROME_STORE_URL} target="_blank" rel="noopener noreferrer">Add to Chrome - 5 free downloads</a>
               <a className="hub-btn hub-btn-alt" href="/#pricing">See pricing</a>
             </section>
           </div>
         </main>
 
-        <footer className="site-footer">
-          <div className="footer-container">
-            <div className="footer-features">
-              <h4 className="footer-section-title" aria-level={3}>Guides</h4>
-              <div className="footer-features-grid">
-                {allOrdered.map((p) => (
-                  <a key={p.slug} className="footer-feature-link" href={`/blog/${p.slug}`}>
-                    {PATHS.find((x) => x.slug === p.slug)?.goal || p.title}
-                  </a>
-                ))}
-                <a className="footer-feature-link" href="/#pricing">Pricing</a>
-              </div>
-            </div>
-            <div className="footer-divider"></div>
-            <div className="footer-bottom">
-              <div className="footer-brand">
-                <img src="/assets/images/img_987e4189cb.png" alt="Video Saver for Skool logo" className="footer-logo" />
-                <span>© 2026 Video Saver for Skool</span>
-              </div>
-              <div className="footer-links">
-                <a href="/#pricing">Pricing</a>
-                <a href="/blog">Blog</a>
-                <a href="/contact">Contact</a>
-                <a href="/privacy">Privacy</a>
-                <a href="/terms">Terms</a>
-                <a href="/refund-policy">Refund</a>
-                <a href="/dmca">DMCA</a>
-              </div>
-              <div className="footer-meta">
-                <span>Chrome Extension</span>
-                <span className="footer-separator">•</span>
-                <a href="mailto:hello@skoolvideosaver.com" className="footer-email">hello@skoolvideosaver.com</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

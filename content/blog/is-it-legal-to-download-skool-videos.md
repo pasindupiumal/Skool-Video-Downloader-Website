@@ -2,7 +2,7 @@
 title: "Is It Legal to Download Skool Videos? Personal Use and Terms"
 seoTitle: "Is It Legal to Download Skool Videos? Personal Use & Terms"
 date: "2026-11-07"
-lastUpdated: "2026-11-07"
+lastUpdated: "2026-11-23"
 author: "Pasindu Piumal"
 category: "FAQ"
 users: "Legal & Policy Guide"
@@ -14,8 +14,8 @@ keywords:
   - "skool video downloader legal"
   - "personal offline use online courses"
   - "skool copyright and terms"
-tldr: "It depends on your country and the creator's terms. Keeping a private copy of a lesson you can already access, for your own study, is treated very differently from sharing or selling it. This is general information, not legal advice."
-description: "Is downloading Skool videos legal? A plain-English look at personal study vs sharing, creator copyright, platform terms, and what our own terms say."
+tldr: "It depends on your country's copyright law, Skool's Terms of Service, and the creator's rules. Keeping a private copy of a lesson you already have legitimate access to for personal study is treated differently from sharing or selling it. This is general information, not legal advice."
+description: "Is downloading Skool videos legal? A plain-English look at U.S. fair use (17 U.S.C. §107), DMCA §512, Skool Terms of Service, and personal offline study."
 video_url: "/assets/videos/demo.mp4"
 quickFacts:
   - label: "Intended Use"
@@ -28,80 +28,85 @@ quickFacts:
     value: "In your browser, not our servers"
 ---
 
-*This article is general information, not legal advice. Copyright and contract law differ by country and state, and the answer can change with the facts. For a specific situation, ask a qualified lawyer in your jurisdiction.*
+*This article is general information, not legal advice. Copyright and contract law differ by country and state, and the legal outcome depends on your specific facts. For legal guidance on a specific situation, consult a qualified lawyer in your jurisdiction.*
 
-Before installing a Skool video downloader, many people ask a fair question: is it actually legal to save videos from a Skool classroom to my computer? There is no single answer, because it depends on **where you live, what the creator's terms say, and what you do with the file**.
+Before saving a course video offline, many students ask whether downloading Skool videos is legal. There is no single yes-or-no rule, because the answer depends on **applicable copyright statutes, Skool's Terms of Service, your course creator's community rules, and what you do with the file**.
 
 ## Quick Answer: Is downloading Skool videos legal?
 
-It depends on your country's copyright rules and the terms set by the course creator and Skool. In general, keeping a private copy of a lesson you already have legitimate access to, for your own study, is treated very differently from sharing, uploading or reselling it. Sharing or selling downloaded course videos without the creator's permission is copyright infringement in most places and breaks the tool's own terms. Video Saver for Skool is meant for personal offline study of content you can already access.
+It depends on your country's copyright laws and the terms set by Skool and your course creator. Keeping a private offline copy of a lesson you already have legitimate access to for personal study is treated differently from sharing, uploading, or reselling it. Distributing someone else's course without permission is copyright infringement in most jurisdictions and violates our Terms of Service.
 
 ## Personal Study vs. Sharing
 
+Copyright law and platform contracts draw a sharp line between private viewing of content you already paid to access and distributing copies to others. Even when a student keeps files strictly offline, community rules or creator permissions still matter, whereas sharing or reselling files crosses clear legal boundaries.
+
 | What you do | Category | Why it matters |
 | :--- | :--- | :--- |
-| Watch a lesson you have access to offline, for example on a flight | Personal use | You are the same viewer, on your own device |
-| Keep a private study archive before a cohort ends | Personal use | Preserves material you were enrolled in |
-| A creator backs up their own classroom videos | Owner use | Creators own their original recordings |
-| Share a Drive or Mega folder with people who did not pay | Not allowed | Infringes the creator's copyright and costs them membership revenue |
-| Upload lessons to YouTube, Telegram or torrent sites | Not allowed | Direct infringement, subject to takedown requests |
+| Watch a lesson you have access to offline, for example on a flight | Personal use | Same authorized viewer, private device, no redistribution |
+| Keep a private study archive before a cohort ends | Personal use | Preserves material you were enrolled in for personal review |
+| A creator backs up their own classroom videos | Owner use | Creators hold rights in their original recordings |
+| Share a Drive or Mega folder with people who did not pay | Not allowed | Infringes creator copyright and harms membership revenue |
+| Upload lessons to YouTube, Telegram, or torrent sites | Not allowed | Direct infringement, subject to DMCA takedown notices |
 | Resell or repackage someone else's course | Not allowed | Commercial infringement and breach of contract |
 
 ## What Our Terms Say
 
-Video Saver for Skool's [Terms of Service](/terms) set three rules:
+Our own [Terms of Service](/terms) govern how **Video Saver for Skool** may be used, regardless of which browser or video player you choose. Every user agrees to limit saved files to personal offline archival of content they are authorized to watch and never to distribute copies.
 
-- **Personal archival use only.** The tool is intended for personal archival use.
-- **You are responsible for having the right.** You must make sure you have the right to download what you save, and not use the tool to infringe the copyrights of course creators or Skool communities.
-- **No redistribution.** You agree not to redistribute, sell or publicly share downloaded content without the content owner's express permission.
+- **Personal archival use only:** The extension is built strictly for personal offline study.
+- **You must hold legitimate access:** You are responsible for ensuring you have the right to save a video and for respecting the copyrights of course creators and Skool communities.
+- **No redistribution or resale:** You agree not to share, upload, sell, or publicly distribute saved videos without the copyright owner's express permission.
 
 ## What the Extension Does and Does Not Do
 
-Many online "paste a link" downloaders run on remote servers that fetch and process videos for you. Video Saver for Skool works differently:
+Unlike remote "paste a link" websites that fetch videos on external servers, **Video Saver for Skool** converts streams locally inside your own Chrome, Edge, Brave, or Opera session. It does not touch our servers and cannot unlock content your Skool account is not already permitted to watch.
 
-1. **It works inside your own session.** It saves videos on pages you have already opened in your logged-in browser. It cannot open locked modules, bypass membership approvals or guess passwords.
-2. **Conversion happens in your browser.** Videos are converted locally and are not uploaded to our servers.
+1. **Works only inside your logged-in session:** The extension saves streams on Skool pages your own account can already open and play. It cannot bypass paywalls, drip schedules, membership approvals, or password locks.
+2. **Converts locally in your browser:** Video segments are merged into an MP4 on your computer and never uploaded to our servers.
 
-Note that a creator may have switched off a host's own download option, for example Loom's. The extension works from the video your browser is already playing, so that setting does not stop it, but it can be a sign the creator wants lessons kept on the platform. That is a reason to check their rules, not a reason to ignore them.
+Always check first whether the creator enabled Skool's or Loom's built-in download icon. If a creator turned off downloads, treat that as a signal they prefer videos remain on the platform—check your community's rules or ask the creator before saving a personal copy. For Loom-specific steps and etiquette, read [how to download Loom videos from Skool](/blog/download-loom-videos-from-skool).
 
 ## Copyright Law vs. Platform and Creator Terms
 
-Two separate things apply:
+Two separate legal frameworks apply whenever you save an online course video: statutory copyright law and private contract terms. Even if a narrow statutory exception might cover a personal copy in one country, platform terms or community guidelines can still restrict downloading independently.
 
-- **Copyright law** decides who owns the work (usually the creator) and restricts copying and distribution. Some countries have private-copying exceptions or fair-use or fair-dealing tests that may cover personal copies of lawfully accessed material, but the scope varies a lot and is not guaranteed.
-- **Terms of service** are contracts. Skool and each community can set their own rules. Some creators encourage offline copies of calls and workshops; others ask that videos stay on the platform.
+- **U.S. Fair Use ([17 U.S.C. § 107](https://www.law.cornell.edu/uscode/text/17/107)):** Under U.S. copyright law (summarized in the [U.S. Copyright Office Fair Use Index](https://www.copyright.gov/fair-use/)), courts weigh four statutory factors: (1) the purpose and character of the use, (2) the nature of the copyrighted work, (3) the amount and substantiality of the portion used, and (4) the effect upon the potential market for the work. Personal offline study is fact-dependent and is not automatically fair use; some other countries (such as EU member states or the UK) also have distinct private-copying or fair-dealing statutes with their own conditions.
+- **DMCA Notice-and-Takedown ([17 U.S.C. § 512](https://www.law.cornell.edu/uscode/text/17/512)):** If anyone publicly re-uploads or shares copyrighted course videos online, rights holders can submit formal takedown notices under § 512(c) to remove infringing material from hosting providers and search indexes. See our [DMCA policy](/dmca) for how we process notices related to this site.
+- **Skool's Terms of Service and Creator Contracts:** Accounts and community memberships are governed by [Skool's Terms of Service](https://www.skool.com/legal?t=terms), [Skool's platform policies](https://help.skool.com/), and each community's own rules. Some creators welcome members keeping personal offline copies for flights or archiving; others explicitly prohibit downloads in their onboarding terms.
 
 ## A Practical Checklist Before You Download
 
-- Read the rules your community posts, usually in onboarding or the About section.
-- Confirm you have legitimate access to the course. Do not use a login that is not yours.
-- Keep downloads on your own devices for your own study.
-- Never upload, share or sell the files.
-- If you are unsure, ask the creator. Many will say yes to offline copies for travel.
+Following a short pre-download check keeps your offline study respectful of both creator expectations and platform rules. If you only need a few lessons to test offline playback, you can evaluate the workflow using the [5 free downloads in total](/blog/download-skool-videos-free) before deciding whether to continue.
+
+- Read the community rules in the **About** tab or onboarding welcome module.
+- Confirm you are logged into your own paid or authorized Skool account.
+- Use any built-in creator download button or attached PDF/MP4 link first if provided.
+- Keep saved MP4 files solely on your own devices for personal review.
+- Ask the creator directly if community rules are silent or unclear.
 
 ## For Course Creators and Rights Holders
 
-Creators can use Video Saver for Skool to back up their own classrooms, for example when moving old Loom or Vimeo embeds to Skool's native player. If you are a creator or rights holder and have a concern about how the extension is used with your content, email **hello@skoolvideosaver.com**. Our [DMCA page](/dmca) explains how removal requests for material hosted on this site are handled.
+Course creators can also use Video Saver for Skool to back up their own classrooms, such as migrating older Loom or Vimeo lessons into Skool's native player. If you are a creator or rights holder with a concern about how the extension is used with your content, email **hello@skoolvideosaver.com** with the subject line **Creator concern** (as outlined on our [DMCA policy](/dmca)) so we can review and respond promptly.
 
 ## Frequently Asked Questions
 
 ### Does Skool have a built-in offline download feature?
-Most Skool classroom lessons do not offer a download button, because videos are streamed through Skool's player or embedded from YouTube, Loom, Vimeo or Wistia.
+Most Skool classroom lessons do not offer a built-in offline download button because videos stream through Skool's native Mux player or embeds from YouTube, Loom, Vimeo, or Wistia. A creator may still enable downloads inside an embed or attach downloadable files beneath a lesson.
 
 ### Can I share downloaded Skool videos with a coworker or study partner?
-No, not without the creator's permission. Downloads should stay on your own devices for your own study. If you want a colleague to have access, ask the creator about a team or multi-seat option.
+No, not without the creator's explicit permission. Keep any personal downloads strictly on your own devices, and ask the creator about team or multi-seat licenses if a colleague needs access.
 
 ### Can I download a course someone shared with me?
-Only if you have legitimate access of your own. The extension saves what your logged-in account can play, and sharing course access you did not pay for is a problem regardless of the tool.
+Only if you hold legitimate access of your own. Video Saver for Skool only saves streams your logged-in account can already play, and sharing paid course logins violates both community rules and our Terms.
 
 ### Does Video Saver for Skool bypass paywalls or locked modules?
-No. It cannot open locked modules, drip-schedule restrictions or content your account does not have access to. It only saves videos your account can already play.
+No. It cannot open locked modules, drip-scheduled lessons, or password-protected embeds you cannot already unlock and play in your browser.
 
 ### Does Video Saver for Skool keep a copy of my videos?
-No. Videos are converted in your browser and are not uploaded to or processed on our servers.
+No. Streams are converted into MP4 files locally inside your browser and are never uploaded to or stored on our servers.
 
 ### Is it legal where I live?
-That depends on your country's copyright law and on the terms of the community you joined. This article cannot answer it for your situation. If it matters, speak to a lawyer.
+That depends on copyright law in your country and the contract terms of Skool and the community you joined. This article is general information, not legal advice; consult a lawyer if you need a legal opinion on your circumstances.
 
-### Where do I learn how to save my own lessons?
-Read the [step-by-step guide on how to download Skool videos](/blog/how-to-download-skool-videos) or the checklist on [saving a Skool course before your membership expires](/blog/save-skool-course-before-membership-expires).
+### What tools and guides should I read next?
+To learn the step-by-step workflow, read [how to download Skool videos](/blog/how-to-download-skool-videos), review the [course backup checklist](/blog/save-skool-course-before-membership-expires), or compare options in [Skool video downloader alternatives](/blog/skool-video-downloader-alternatives).

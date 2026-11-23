@@ -1,5 +1,5 @@
 import { AUTHOR } from "@/lib/author";
-import { SITE_URL, SITE_NAME, CHROME_STORE_URL, FREE_DOWNLOADS } from "@/lib/site";
+import { SITE_URL, SITE_NAME, CHROME_STORE_URL, DISCORD_INVITE_URL, FREE_DOWNLOADS, MONTHLY_PRICE } from "@/lib/site";
 
 export type FaqItem = { q: string; a: string };
 
@@ -15,8 +15,24 @@ export const organizationSchema = {
   name: SITE_NAME,
   url: SITE_URL,
   logo: `${SITE_URL}/icon.png`,
+  description: "Independent browser extension that saves Skool classroom and community videos as MP4 files locally.",
   email: "hello@skoolvideosaver.com",
-  sameAs: ["https://x.com/skoolvideosaver", CHROME_STORE_URL],
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    email: "hello@skoolvideosaver.com",
+    availableLanguage: "en",
+  },
+  founder: {
+    "@type": "Person",
+    "@id": `${AUTHOR.url}#person`,
+    name: AUTHOR.name,
+    url: AUTHOR.url,
+    jobTitle: AUTHOR.jobTitle,
+    worksFor: { "@id": `${SITE_URL}/#organization` },
+    sameAs: [AUTHOR.url, AUTHOR.linkedin, AUTHOR.github],
+  },
+  sameAs: ["https://x.com/skoolvideosaver", CHROME_STORE_URL, DISCORD_INVITE_URL],
 };
 
 export const websiteSchema = {
@@ -30,6 +46,26 @@ export const websiteSchema = {
   inLanguage: "en",
 };
 
+export function homePageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${SITE_URL}/#webpage`,
+    url: `${SITE_URL}/`,
+    name: "Skool Video Downloader - Save Skool Videos to MP4 (5 Free)",
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#software` },
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/opengraph-image.jpg`,
+      width: 1200,
+      height: 630,
+    },
+    inLanguage: "en",
+    dateModified: "2026-11-23",
+  };
+}
+
 export function softwareSchema(lifetimePrice: number | string) {
   return {
     "@context": "https://schema.org",
@@ -39,15 +75,45 @@ export function softwareSchema(lifetimePrice: number | string) {
     alternateName: "Skool Video Downloader",
     description: `Chrome extension that downloads Skool videos (native Skool player, YouTube, Loom, Vimeo and Wistia) as MP4 files. Processing is local. ${FREE_DOWNLOADS} free downloads included.`,
     url: SITE_URL,
-    dateModified: "2026-11-07",
+    image: `${SITE_URL}/opengraph-image.jpg`,
+    dateModified: "2026-11-23",
     applicationCategory: "BrowserApplication",
     operatingSystem: "Chrome, Edge, Brave, Opera (Windows, macOS, Linux)",
     downloadUrl: CHROME_STORE_URL,
+    installUrl: CHROME_STORE_URL,
     publisher: { "@id": `${SITE_URL}/#organization` },
     offers: [
-      { "@type": "Offer", name: `Free (${FREE_DOWNLOADS} downloads)`, price: "0", priceCurrency: "USD" },
-      { "@type": "Offer", name: "Standard Monthly", price: "25", priceCurrency: "USD" },
-      { "@type": "Offer", name: "Lifetime Pro", price: String(lifetimePrice), priceCurrency: "USD" },
+      {
+        "@type": "Offer",
+        name: `Free (${FREE_DOWNLOADS} downloads)`,
+        price: "0",
+        priceCurrency: "USD",
+        url: `${SITE_URL}/#pricing`,
+        availability: "https://schema.org/InStock",
+      },
+      {
+        "@type": "Offer",
+        name: "Standard Monthly",
+        price: String(MONTHLY_PRICE),
+        priceCurrency: "USD",
+        url: `${SITE_URL}/#pricing`,
+        availability: "https://schema.org/InStock",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: String(MONTHLY_PRICE),
+          priceCurrency: "USD",
+          billingDuration: "P1M",
+          unitCode: "MON",
+        },
+      },
+      {
+        "@type": "Offer",
+        name: "Lifetime Pro",
+        price: String(lifetimePrice),
+        priceCurrency: "USD",
+        url: `${SITE_URL}/#pricing`,
+        availability: "https://schema.org/InStock",
+      },
     ],
   };
 }
@@ -109,6 +175,7 @@ export function articleSchema(p: {
       name: AUTHOR.name,
       url: AUTHOR.url,
       jobTitle: AUTHOR.jobTitle,
+      worksFor: { "@id": `${SITE_URL}/#organization` },
       sameAs: [AUTHOR.url, AUTHOR.linkedin, AUTHOR.github],
     },
     publisher: {
@@ -208,11 +275,68 @@ export function videoSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "VideoObject",
+    "@id": `${SITE_URL}/#demo-video`,
     name: "Video Saver for Skool demo: save Skool lessons as MP4",
     description: "Short demo of the Video Saver for Skool Chrome extension downloading a Skool lesson video as an MP4 file.",
-    thumbnailUrl: `${SITE_URL}/opengraph-image.jpg`,
-    uploadDate: "2026-11-07",
+    thumbnailUrl: `${SITE_URL}/assets/videos/demo-poster.webp`,
+    uploadDate: "2026-11-07T00:00:00+00:00",
+    duration: "PT28S",
     contentUrl: `${SITE_URL}/assets/videos/demo.mp4`,
     publisher: { "@id": `${SITE_URL}/#organization` },
+    isPartOf: { "@id": `${SITE_URL}/#webpage` },
+  };
+}
+
+export function webPageSchema(p: { path: string; name: string; type?: "WebPage" | "ContactPage" }) {
+  const url = `${SITE_URL}${p.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": p.type || "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: p.name,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        breadcrumb: { "@id": `${url}#breadcrumb` },
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: p.name, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+export function aboutPageSchema() {
+  const url = `${SITE_URL}/about`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: `About ${SITE_NAME}`,
+        description: `Independent browser extension built by ${AUTHOR.name} to save Skool classroom and community videos locally as MP4 files.`,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        mainEntity: { "@id": `${SITE_URL}/#organization` },
+        breadcrumb: { "@id": `${url}#breadcrumb` },
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+          { "@type": "ListItem", position: 2, name: "About", item: url },
+        ],
+      },
+    ],
   };
 }

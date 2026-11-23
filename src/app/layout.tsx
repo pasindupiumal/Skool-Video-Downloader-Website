@@ -56,7 +56,6 @@ export default function RootLayout({
           }}
         />
         <meta name="yandex-verification" content="f72b55d01d55baa0" />
-        <link rel="stylesheet" href="/assets/css/index.css" />
         <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <style
           dangerouslySetInnerHTML={{
