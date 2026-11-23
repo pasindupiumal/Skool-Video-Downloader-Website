@@ -17,7 +17,7 @@ export default function DashboardNavbar({ userEmail, userName }: NavbarProps) {
       <div className={styles.navContainer}>
         <a className={styles.navLogo} href="/">
           <img
-            src="/assets/images/img_a38993e738.png"
+            src="/assets/images/img_a38993e738.webp"
             height={32}
             width={32}
             alt="Video Saver for Skool Logo"

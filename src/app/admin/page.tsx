@@ -1,4 +1,5 @@
 import React from "react";
+import "@/styles/shell.css";
 import styles from "../dashboard/dashboard.module.css";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -13,6 +14,11 @@ import MessageToggle from "./message-toggle";
 import FreeDownloadsGrant from "./free-downloads-grant";
 import NetworksPanel from "./networks-panel";
 const BORDER = "1px solid #ebecedcc";
+
+export const metadata = {
+  title: "Admin Dashboard | Video Saver for Skool",
+  robots: { index: false, follow: false },
+};
 
 export default async function AdminDashboard() {
   const token = cookies().get(ADMIN_COOKIE_NAME)?.value;

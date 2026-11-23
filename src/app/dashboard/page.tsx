@@ -1,5 +1,6 @@
 import React from 'react';
 import { CHROME_STORE_URL, DISCORD_INVITE_URL } from "@/lib/site";
+import "@/styles/shell.css";
 import styles from './dashboard.module.css';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
@@ -11,6 +12,11 @@ import DashboardNavbar from "./navbar";
 import PricingSection from "./pricing-section";
 import LicenseList from "./license-list";
 import BillingPortalButton from "./billing-portal-button";
+
+export const metadata = {
+  title: "Dashboard | Video Saver for Skool",
+  robots: { index: false, follow: false },
+};
 
 export default async function UserDashboard() {
   const session = await getServerSession(authOptions);

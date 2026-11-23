@@ -6,6 +6,7 @@ import AdminLoginClient from "./admin-login-client";
 
 export const metadata = {
   title: "Admin Login | Video Saver for Skool",
+  robots: { index: false, follow: false },
 };
 
 export default function AdminLoginPage() {

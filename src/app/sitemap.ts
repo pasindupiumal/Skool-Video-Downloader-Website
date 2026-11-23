@@ -7,13 +7,14 @@ import { SITE_URL as BASE_URL } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/`, lastModified: '2026-11-07', changeFrequency: 'weekly', priority: 1 },
-    { url: `${BASE_URL}/blog`, lastModified: '2026-11-07', changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE_URL}/contact`, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${BASE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE_URL}/terms`, lastModified: '2026-11-06', changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE_URL}/refund-policy`, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${BASE_URL}/dmca`, lastModified: '2026-11-07', changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE_URL}/`, lastModified: '2026-11-23' },
+    { url: `${BASE_URL}/blog`, lastModified: '2026-11-23' },
+    { url: `${BASE_URL}/about`, lastModified: '2026-11-23' },
+    { url: `${BASE_URL}/contact`, lastModified: '2026-11-07' },
+    { url: `${BASE_URL}/privacy`, lastModified: '2026-11-06' },
+    { url: `${BASE_URL}/terms`, lastModified: '2026-11-23' },
+    { url: `${BASE_URL}/refund-policy`, lastModified: '2026-11-07' },
+    { url: `${BASE_URL}/dmca`, lastModified: '2026-11-07' },
   ];
 
   const postsDirectory = path.join(process.cwd(), 'content/blog');
@@ -27,8 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         return {
           url: `${BASE_URL}/blog/${filename.replace('.md', '')}`,
           lastModified: data.lastUpdated || data.date || undefined,
-          changeFrequency: 'monthly' as const,
-          priority: 0.6,
         };
       });
   } catch (err) {

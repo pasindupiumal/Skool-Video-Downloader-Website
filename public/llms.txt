@@ -4,13 +4,16 @@
 
 ## Key facts
 - Also searched as: skool video downloader, skool video saver, download skool videos.
-- Supported players: Skool native (Mux/HLS), YouTube, Loom (including password-protected), Vimeo, Wistia.
+- Supported players: Skool native (Mux/HLS), YouTube, Loom, Vimeo, Wistia.
+- Supported browsers: Chrome, Edge, Brave, Opera (Windows, macOS, Linux).
 - Works on classroom lessons and community post videos you already have access to.
-- Free: 5 downloads in total (trial). Monthly: $25/month. Lifetime Pro: one-time, tiered early-bird pricing (see pricing.md).
+- Free: 5 downloads in total (one-time trial). Monthly: $25/month. Lifetime Pro: $49 one-time (early-bird pricing; see pricing.md).
 - Refunds: 14 days. Support: hello@skoolvideosaver.com
+- Independence: independent product by Pasindu Piumal; not affiliated with Skool.com, Downloader for Skool (serp.co), or Skool Video Download Tools (A5).
 
 ## Pages
 - [Homepage](https://www.skoolvideosaver.com/): features, pricing, FAQ
+- [About](https://www.skoolvideosaver.com/about): developer, independence notice, and product facts
 - [Pricing details](https://www.skoolvideosaver.com/pricing.md)
 - [Blog](https://www.skoolvideosaver.com/blog): guides
 - [How to download Skool videos](https://www.skoolvideosaver.com/blog/how-to-download-skool-videos)

@@ -1,6 +1,6 @@
 import { AUTHOR } from '@/lib/author';
 import React from 'react';
-import { CHROME_STORE_URL, SITE_URL, SITE_NAME } from "@/lib/site";
+import { CHROME_STORE_URL, FREE_DOWNLOADS, SITE_URL, SITE_NAME, MONTHLY_PRICE } from "@/lib/site";
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
@@ -9,6 +9,7 @@ import html from 'remark-html';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import DemoVideo from "@/components/DemoVideo";
+import SiteFooter from "@/components/SiteFooter";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -230,6 +231,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     ? `<a href="/dashboard" target="_blank"><button class="button button--primary button--small">Get It Now</button></a>`
     : `<a href="${CHROME_STORE_URL}" target="_blank" rel="noopener noreferrer"><button class="button button--primary button--small">Get It Now</button></a>`;
 
+  const crumbLabel = String(data.users || data.category || 'Article');
   const schemas: unknown[] = [
     articleSchema({
       title: data.title,
@@ -243,8 +245,8 @@ export default async function BlogPost({ params }: { params: { slug: string } })
     }),
     breadcrumbSchema([
       { name: 'Home', path: '/' },
-      { name: 'Guides & Tutorials', path: '/blog' },
-      { name: data.title, path: `/blog/${params.slug}` },
+      { name: 'Guides', path: '/blog' },
+      { name: crumbLabel, path: `/blog/${params.slug}` },
     ]),
   ];
 
@@ -278,6 +280,16 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   const published = fmtDate(data.date);
   const installHref = session ? '/dashboard' : CHROME_STORE_URL;
   const theme = data.category === 'Comparisons' ? 'violet' : data.category === 'FAQ' ? 'green' : 'blue';
+
+  let introHtml = contentHtml;
+  let restHtml = '';
+  if (data.video_url) {
+    const h2Matches = Array.from(contentHtml.matchAll(/<h2\b/gi));
+    if (h2Matches.length >= 2 && h2Matches[1].index !== undefined) {
+      introHtml = contentHtml.slice(0, h2Matches[1].index);
+      restHtml = contentHtml.slice(h2Matches[1].index);
+    }
+  }
 
   return (
     <div className="page-blog-post" data-theme={theme}>
@@ -321,13 +333,15 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         .pg-answer::before { content:""; position:absolute; left:24px; top:0; width:44px; height:5px; border-radius:0 0 6px 6px; background:var(--pg-a); }
         .pg-answer-label { font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--pg-ink); margin:6px 0 8px; }
         .pg-answer p { margin:0; font-size:.98rem; line-height:1.65; color:#1e293b; }
+        .pg-answer-cta { margin-top:16px; }
         .pg-facts { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:30px 0 0; }
         .pg-fact { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); border-radius:16px; padding:14px 16px; backdrop-filter:blur(6px); }
         .pg-fact dt { font-size:.7rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--pg-l); margin-bottom:5px; }
         .pg-fact dd { margin:0; font-size:.92rem; font-weight:700; line-height:1.4; color:#fff; }
         .pg-grid { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:48px; padding:40px 0 24px; align-items:start; }
-        .pg-article { min-width:0; max-width:740px; }
-        .pg-prose { font-size:1.06rem; line-height:1.75; color:#334155; counter-reset:sec; }
+        .pg-article { min-width:0; max-width:740px; counter-reset:sec; }
+        .pg-prose { font-size:1.06rem; line-height:1.75; color:#334155; }
+        .pg-prose-cont > h2:first-child { border-top:1px solid #e0ddd4; padding-top:1.1em; }
         .pg-prose > *:first-child { margin-top:0; }
         .pg-prose h2 { counter-increment:sec; font-size:1.7rem; line-height:1.25; font-weight:800; letter-spacing:-.02em; color:#0f172a; margin:2.8em 0 .7em; padding-top:1.1em; border-top:1px solid #e0ddd4; scroll-margin-top:90px; }
         .pg-prose h2::before { content:counter(sec, decimal-leading-zero); display:table; font-size:.78rem; font-weight:800; letter-spacing:.1em; color:var(--pg-ink); background:var(--pg-tint); padding:3px 10px; border-radius:999px; margin-bottom:10px; }
@@ -373,13 +387,13 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         .pg-mtoc { display:none; margin:24px 0 0; background:#fff; border:1px solid #e7e5df; border-radius:14px; padding:0 16px; }
         .pg-mtoc summary { cursor:pointer; font-weight:700; padding:14px 0; }
         .pg-mtoc .pg-toc { padding-bottom:12px; }
-        .pg-video { margin:36px auto 0; max-width:820px; }
+        .pg-video { margin:28px 0 32px; }
         .pg-video-frame { border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(15,23,42,.14); border:1px solid #e0ddd4; }
-        .pg-video h2 { font-size:1.2rem; font-weight:800; margin:0 0 12px; text-align:center; }
+        .pg-video-label { font-size:1.15rem; font-weight:800; color:#0f172a; margin:0 0 12px; text-align:center; }
         .pg-standards { margin:20px 0 0; padding:20px 24px; background:#fff; border:1px solid #e7e5df; border-left:4px solid var(--pg-a); border-radius:14px; color:#475569; line-height:1.65; font-size:.93rem; }
         .pg-standards strong { color:#0f172a; } .pg-standards a { color:var(--pg-ink); font-weight:600; }
         .pg-cta { margin:40px 0 0; background:linear-gradient(135deg,var(--pg-d1),var(--pg-d2)); border-radius:26px; padding:36px 32px; color:#cbd5e1; display:flex; gap:24px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-        .pg-cta h3 { color:#fff; font-size:1.5rem; font-weight:800; margin:0 0 6px; }
+        .pg-cta-title { color:#fff; font-size:1.5rem; font-weight:800; margin:0 0 6px; }
         .pg-cta p { margin:0; max-width:460px; line-height:1.6; }
         .pg-cta small { display:block; margin-top:8px; color:#94a3b8; font-size:.8rem; }
         .pg-cta .pg-btn { padding:14px 24px; white-space:nowrap; }
@@ -415,7 +429,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         <header className="index-header">
           <div className="header-container">
             <a className="header-logo" href="/">
-              <img src="/assets/images/img_a38993e738.png" height="30" width="30" alt="Video Saver for Skool logo" />
+              <img src="/assets/images/img_a38993e738.webp" height="30" width="30" alt="Video Saver for Skool logo" />
               <span>Video Saver for Skool</span>
             </a>
             <nav className="header-nav">
@@ -434,7 +448,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
             <nav className="pg-crumbs" aria-label="Breadcrumb">
               <a href="/">Home</a><span>/</span>
               <a href="/blog">Guides</a><span>/</span>
-              <span aria-current="page">{String(data.users || data.category || 'Article')}</span>
+              <span aria-current="page">{crumbLabel}</span>
             </nav>
 
             <div className="pg-hero-grid">
@@ -446,7 +460,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               <h1>{String(data.title)}</h1>
               <p className="pg-desc">{String(data.description || '')}</p>
               <div className="pg-by">
-                <img src="/assets/images/img_a38993e738.png" alt="" width="36" height="36" />
+                <img src="/assets/images/img_a38993e738.webp" alt="" width="36" height="36" />
                 <a className="pg-author" href={AUTHOR.url} target="_blank" rel="noopener noreferrer author">{AUTHOR.name}</a>
                 <span className="sep">·</span>
                 <span>Updated {updated}</span>
@@ -463,6 +477,11 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               <section className="pg-answer" aria-label="Quick answer">
                 <div className="pg-answer-label">Quick answer</div>
                 <p>{String(data.tldr)}</p>
+                <div className="pg-answer-cta">
+                  <a className="pg-btn" href={installHref} target="_blank" rel="noopener noreferrer">
+                    Add to Chrome - {FREE_DOWNLOADS} free downloads
+                  </a>
+                </div>
               </section>
             )}
             </div>
@@ -492,19 +511,23 @@ export default async function BlogPost({ params }: { params: { slug: string } })
               </details>
             )}
 
-            {data.video_url && (
-              <section className="pg-video" aria-label="Demo video">
-                <h2>Watch the demo</h2>
-                <div className="pg-video-frame"><DemoVideo /></div>
-              </section>
-            )}
-
             <div className="pg-grid">
               <article className="pg-article">
-                <div className="pg-prose" dangerouslySetInnerHTML={{ __html: contentHtml }} />
+                <div className="pg-prose" dangerouslySetInnerHTML={{ __html: introHtml }} />
+
+                {data.video_url && (
+                  <section className="pg-video" aria-label="Demo video">
+                    <div className="pg-video-label">Watch the demo</div>
+                    <div className="pg-video-frame"><DemoVideo /></div>
+                  </section>
+                )}
+
+                {restHtml && (
+                  <div className="pg-prose pg-prose-cont" dangerouslySetInnerHTML={{ __html: restHtml }} />
+                )}
 
                 <aside className="pg-bio" aria-label="About the author">
-                  <img src="/assets/images/img_a38993e738.png" alt="" width="52" height="52" />
+                  <img src="/assets/images/img_a38993e738.webp" alt="" width="52" height="52" />
                   <div>
                     <div className="pg-bio-label">About the author</div>
                     <strong><a href={AUTHOR.url} target="_blank" rel="noopener noreferrer author">{AUTHOR.name}</a></strong>
@@ -519,9 +542,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 
                 <section className="pg-cta" aria-label="Install the extension">
                   <div>
-                    <h3>Ready to save your Skool videos as MP4?</h3>
+                    <div className="pg-cta-title">Ready to save your Skool videos as MP4?</div>
                     <p>Install {SITE_NAME} and try it on your own lessons with 5 free downloads. No credit card required.</p>
-                    <small>Then $25/month or Lifetime Pro (current price on the homepage) · 14-day refund policy</small>
+                    <small>Then ${MONTHLY_PRICE}/month or Lifetime Pro (current price on the homepage) · 14-day refund policy</small>
                   </div>
                   <a className="pg-btn" href={installHref} target="_blank" rel="noopener noreferrer">Add to Chrome - 5 free downloads</a>
                 </section>
@@ -563,40 +586,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
           </div>
         </main>
 
-        <footer className="site-footer">
-          <div className="footer-container">
-            <div className="footer-features">
-              <h4 className="footer-section-title" aria-level={3}>Guides</h4>
-              <div className="footer-features-grid">
-                {allPosts.map((p) => (
-                  <a key={p.slug} className="footer-feature-link" href={`/blog/${p.slug}`}>{p.title}</a>
-                ))}
-                <a className="footer-feature-link" href="/#pricing">Pricing</a>
-              </div>
-            </div>
-            <div className="footer-divider"></div>
-            <div className="footer-bottom">
-              <div className="footer-brand">
-                <img src="/assets/images/img_987e4189cb.png" alt="Video Saver for Skool logo" className="footer-logo" />
-                <span>© 2026 Video Saver for Skool</span>
-              </div>
-              <div className="footer-links">
-                <a href="/#pricing">Pricing</a>
-                <a href="/blog">Blog</a>
-                <a href="/contact">Contact</a>
-                <a href="/privacy">Privacy</a>
-                <a href="/terms">Terms</a>
-                <a href="/refund-policy">Refund</a>
-                <a href="/dmca">DMCA</a>
-              </div>
-              <div className="footer-meta">
-                <span>Chrome Extension</span>
-                <span className="footer-separator">•</span>
-                <a href="mailto:hello@skoolvideosaver.com" className="footer-email">hello@skoolvideosaver.com</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );
